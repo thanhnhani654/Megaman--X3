@@ -1,0 +1,6 @@
+#pragma once
+
+class HPComponent
+{
+
+};

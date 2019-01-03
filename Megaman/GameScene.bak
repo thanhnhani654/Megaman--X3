@@ -1,0 +1,24 @@
+#include "GameScene.h"
+
+void GameScene::Initialize()
+{
+	megaman.Initialize();
+	megaman.SetPosition(16*45, 100);
+}
+
+void GameScene::UpdateInput(float deltatime)
+{
+	megaman.UpdateInput(deltatime);
+	
+}
+
+void GameScene::Update(float deltatime)
+{
+	megaman.Update(deltatime);
+	Camera::getInstance()->Update(deltatime, megaman.GetPosition());
+}
+
+void GameScene::Draw()
+{
+	megaman.Draw();
+}
