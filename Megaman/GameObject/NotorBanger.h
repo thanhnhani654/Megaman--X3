@@ -3,6 +3,7 @@
 #include "Megaman.h"
 #include "NormalBullet.h"
 #include "NotorBullet.h"
+#include "Item.h"
 
 #define PRINT_SIZE TRUE
 #define PRINT_SIZE_ENABLE_OBJECT TRUE

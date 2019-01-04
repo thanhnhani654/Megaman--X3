@@ -1,24 +1,37 @@
-#pragma once
-#include "GameObject.h"
-#include "../Component/Box2D.h"
+﻿#pragma once
+#include "Creature.h"
+#include "Megaman.h"
 
-enum eItem
-{
-	HealthPackItem,
-	RocketItem,
-	FreezeItem,
-};
+#define PRINT_SIZE TRUE
+#define PRINT_SIZE_ENABLE_OBJECT TRUE
 
-class Item : public GameObject
+
+class Item : public Creature
 {
 private:
-	eItem _Item;
-	Box2D box;
+	float lifeTime;
+	//Megaman* megaman;
 public:
+	Item() {};
+	Item(D3DXVECTOR2 pos, int direct = 0);
+	~Item() {};
 
-	eItem GetItemType();
+	static std::vector<Item*> listItem;
 
-	void Initialize(eItem item);
-	void Destroy();
+	bool IsDisable();
+	void Disable();
+	void Enable();
+
+	void Initialize();
+	void ReInitialize(D3DXVECTOR2 pos, int direct);
+	void Update(float deltatime);
+	void Item::WallCollision(float collideTime, int normalX, int normalY, float deltatime, Box box);
+	void OnCollision(float deltatime);
 	void Draw();
+	void Destroy();							//Dùng để xóa những con trỏ bên trong
+
+
+	static void UpdateAll(float deltatime);
+	static void DrawAll();
+	static Item* CreateItem(D3DXVECTOR2 pos, int direct);
 };

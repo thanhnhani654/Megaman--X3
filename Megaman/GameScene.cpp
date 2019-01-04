@@ -86,6 +86,7 @@ void GameScene::Update(float deltatime)
 	HelitRocket::UpdateAll(deltatime);
 	BlastHornet::UpdateAll(deltatime);
 	Bee::UpdateAll(deltatime);
+	Item::UpdateAll(deltatime);
 
 	Camera::getInstance()->Update(deltatime,megaman->GetPosition());	
 	tree->DynamicLoad(deltatime);
@@ -107,6 +108,7 @@ void GameScene::Draw()
 	HelitRocket::DrawAll();
 	BlastHornet::DrawAll();
 	Bee::DrawAll();
+	Item::DrawAll();
 	//HUD::getInstance()->Draw();
 
 	ele.Draw();

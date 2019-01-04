@@ -6,7 +6,7 @@
 
 #define CameraWidth 400
 #define CameraHeight 400
-#define PRINT_POSITION TRUE
+#define PRINT_POSITION FALSE
 
 enum eCamerastage
 {

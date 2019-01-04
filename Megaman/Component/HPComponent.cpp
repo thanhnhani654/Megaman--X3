@@ -2,6 +2,7 @@
 
 void HPComponent::Initialize(float hp, float dmg)
 {
+	maxHealtPoint = hp;
 	healtPoint = hp;
 	damage = dmg;
 	bImmortal = false;
@@ -22,6 +23,13 @@ void HPComponent::DoDamage(float dmg, bool godmode)
 		//std::cout << "Dead" << std::endl;
 	}
 
+}
+
+void HPComponent::Health(float heal)
+{
+	healtPoint += heal;
+	if (healtPoint > maxHealtPoint)
+		healtPoint = maxHealtPoint;
 }
 
 void HPComponent::ToggleImmortal()

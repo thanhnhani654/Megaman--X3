@@ -18,6 +18,7 @@
 #include "GameObject\BlastHornet.h"
 #include "GameObject\Bee.h"
 #include "GameObject\HUD.h"
+#include "GameObject\Item.h"
 
 #include "Quadtree.h"
 using namespace std;

@@ -220,7 +220,7 @@ void NotorBanger::UpdateState(float deltatime)
 		timeToDeadCount -= deltatime;
 		if (timeToDeadCount < 0)
 		{
-			cout << "DEAD" << endl;
+			Item::CreateItem(this->GetPosition(), 0);
 			Disable();
 		}
 		break;
