@@ -41,9 +41,6 @@ void GameScene::Initialize()
 	Spawner<HeadHunter>(D3DXVECTOR2(500, 3220), false);
 	Spawner<HeadHunter>(D3DXVECTOR2(550, 3220), false);*/
 
-	mapcollision1.Initialize(100,2990,3100,800,20);
-	mapcollision1.SetName("ground");
-
 	ele.Initialize(892,2860,64,16);
 	//gate1.Initialize(440, 3216, 16, 48);
 	//gate1.Initialize(2309, 2912, 16, 48);
