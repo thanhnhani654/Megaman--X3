@@ -21,10 +21,19 @@ void Camera::UpdateInput(float deltatime)
 
 void Camera::Update(float deltatime, D3DXVECTOR2 fpos)
 {
+	if (PRINT_POSITION)
+		std::cout << "Camera X: " << position.x << "\tCamera Y: " << position.y << std::endl;
 	if (bFollowCamera)
 	{
-		position.x = fpos.x - CameraWidth / 2;
-		position.y = fpos.y - CameraHeight / 2;
+		if (!bStageCamera)
+		{
+			position.x = fpos.x - CameraWidth / 2;
+			position.y = fpos.y - CameraHeight / 2;
+		}
+		else
+		{
+			UpdateCameraStage(deltatime, fpos);
+		}
 	}
 	else if (bFreeMode && !bFollowCamera)
 	{
@@ -37,6 +46,47 @@ void Camera::Update(float deltatime, D3DXVECTOR2 fpos)
 		if (IsKeyDown(DIK_UP))
 			position.y += speed;
 		//std::cout << "X: " << position.x << " Y: " << position.y << std::endl;
+	}
+}
+
+void Camera::UpdateCameraStage(float deltatime, D3DXVECTOR2 fpos)
+{
+	switch (stage)
+	{
+	case khong:
+		position.x = 200;
+		position.y = 3000;
+		limitLeftX = 0;
+		limitRightX = 690;
+		stage = eCamerastage::mot;
+		break;
+	case mot:
+		if (position.x >= limitLeftX)
+			position.x = fpos.x - CameraWidth / 2;
+		else
+			position.x = limitLeftX;
+
+		if (position.x > limitRightX)
+		{
+			stage = eCamerastage::hai;
+			limitBottomY = 3000;
+			limitTopY = 3460;
+		}
+		break;
+	case hai:
+		if (position.y >= limitBottomY && fpos.y - CameraHeight / 2 >= limitBottomY)
+			position.y = fpos.y - CameraHeight / 2;
+		else
+			position.y = limitBottomY;
+		if (position.y > limitTopY)
+		{
+			stage = eCamerastage::ba;
+		}
+		break;
+	case ba:
+		break;
+	case bon:
+		break;
 	}
 }
 

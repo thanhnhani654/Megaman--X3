@@ -6,6 +6,16 @@
 
 #define CameraWidth 400
 #define CameraHeight 400
+#define PRINT_POSITION TRUE
+
+enum eCamerastage
+{
+	khong,
+	mot,
+	hai,
+	ba,
+	bon
+};
 
 class Camera : public Controllable
 {
@@ -14,19 +24,36 @@ private:
 	static Camera* instance;
 	bool bFollowCamera;
 	bool bFreeMode;
+	bool bStageCamera;
 	float speed;
 	D3DXVECTOR2 size;
+	eCamerastage stage;
+
+	bool lockX;
+	bool lockY;
+	float limitRightX;
+	float limitLeftX;
+	float limitTopY;
+	float limitBottomY;
+
 public:
 	static Camera* getInstance();
 	Camera()
 	{
 		bFollowCamera = true;
 		bFreeMode = false;
+		bStageCamera = true;
+		stage = eCamerastage::khong;
 		position.x = 0;
 		position.y = 0;
 		speed = 2;
 		size.x = CameraWidth;
 		size.y = CameraHeight;
+
+		lockX = false;
+		lockY = true;
+		
+
 	}
 
 	D3DXVECTOR2 GetPosition()
@@ -48,6 +75,7 @@ public:
 	void ToggleFollowCamera();
 
 	void Update(float deltatime, D3DXVECTOR2 fpos);
+	void UpdateCameraStage(float deltatime, D3DXVECTOR2 fpos);
 
 	void UpdateInput(float deltatime);
 
