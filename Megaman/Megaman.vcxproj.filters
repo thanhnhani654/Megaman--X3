@@ -97,6 +97,9 @@
     <ClCompile Include="GameObject\HUD.cpp">
       <Filter>Source\GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="GameObject\Scroller.cpp">
+      <Filter>Source\GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -191,6 +194,9 @@
       <Filter>Header\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="GameObject\HUD.h">
+      <Filter>Header\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\Scroller.h">
       <Filter>Header\GameObject</Filter>
     </ClInclude>
   </ItemGroup>

@@ -17,7 +17,8 @@ void GameScene::Initialize()
 
 	megaman = Megaman::getInstance();
 	megaman->Initialize();
-	megaman->SetPosition(300, 3320);
+	megaman->SetPosition(300, 3420);
+	//MapCollision::CreateMapCollision(0, 0, 3200, 3000, 50);
 	//megaman->SetPosition(2361, 2904);
 	//megaman->SetPosition(0, 0);
 
@@ -42,11 +43,11 @@ void GameScene::Initialize()
 	Spawner<HeadHunter>(D3DXVECTOR2(500, 3220), false);
 	Spawner<HeadHunter>(D3DXVECTOR2(550, 3220), false);*/
 
-	mapcollision1.Initialize(100,2990,3100,800,20);
-	mapcollision1.SetName("ground");
+	mapcollision1.Initialize(500,0,3200,3000,20);
+	mapcollision1.SetName("rightScroller");
 
 	ele.Initialize(892,2860,64,16);
-	gate1.Initialize(440, 3216, 16, 48);
+	//gate1.Initialize(440, 3216, 16, 48);
 
 	//Setting Camera
 	Camera::getInstance()->SetPosition(0, 0);
@@ -77,7 +78,7 @@ void GameScene::Update(float deltatime)
 	D3DXVECTOR3 temp2 = ele.GetPosition();
 	megaman->Update(deltatime);
 	ele.Update(deltatime);
-	gate1.Update(deltatime);
+	//gate1.Update(deltatime);
 
 	temp1.y = megaman->GetPosition().y - temp1.y;
 	temp2.y = ele.GetPosition().y - temp2.y;
@@ -114,5 +115,5 @@ void GameScene::Draw()
 	HUD::getInstance()->Draw();
 
 	ele.Draw();
-	gate1.Draw();
+	//gate1.Draw();
 }

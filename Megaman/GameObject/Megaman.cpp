@@ -725,6 +725,18 @@ void Megaman::OnCollision(float deltatime)
 				GroundCollision(collideTime, normalX, normalY, deltatime, (*it)->box.GetBox());
 			}
 
+			if ((*it)->name == "leftScroller")
+			{
+				GroundCollision(collideTime, normalX, normalY, deltatime, (*it)->box.GetBox());
+				GetMoveComponent()->SetVelocity(GetMoveComponent()->GetVelocity().x - 70, GetMoveComponent()->GetVelocity().y);
+			}
+
+			if ((*it)->name == "rightScroller")
+			{
+				GroundCollision(collideTime, normalX, normalY, deltatime, (*it)->box.GetBox());
+				GetMoveComponent()->SetVelocity(GetMoveComponent()->GetVelocity().x + 70, GetMoveComponent()->GetVelocity().y);
+			}
+
 			if ((*it)->name == "wall" && normalX != 0)
 			{
 				WallCollision(collideTime, normalX, normalY, deltatime, (*it)->box.GetBox());
