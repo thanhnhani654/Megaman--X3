@@ -477,7 +477,7 @@ void Quadtree::MapCollisionLoader(Entity * entity)
 
 void Quadtree::NotorBangerLoader(Entity * entity)
 {
-	NotorBanger* object = NotorBanger::CreateNotorBanger(D3DXVECTOR2(entity->boundBox->x, entity->boundBox->y));
+	NotorBanger* object = NotorBanger::CreateNotorBanger(D3DXVECTOR2(entity->boundBox->x, entity->boundBox->y),entity->direction);
 	entity->bCreated = true;
 
 	//cout << entity->boundBox->x << "\t" << entity->boundBox->y << "\t" << entity->boundBox->width << "\t" << entity->boundBox->height << "\n";
@@ -500,7 +500,7 @@ void Quadtree::NotorBangerLoader(Entity * entity)
 
 void Quadtree::HeadHunterLoader(Entity * entity)
 {
-	HeadHunter* object = HeadHunter::CreateHeadHunter(D3DXVECTOR2(entity->boundBox->x, entity->boundBox->y));
+	HeadHunter* object = HeadHunter::CreateHeadHunter(D3DXVECTOR2(entity->boundBox->x, entity->boundBox->y), entity->direction);
 	entity->bCreated = true;
 
 	//cout << entity->boundBox->x << "\t" << entity->boundBox->y << "\t" << entity->boundBox->width << "\t" << entity->boundBox->height << "\n";
@@ -523,7 +523,7 @@ void Quadtree::HeadHunterLoader(Entity * entity)
 
 void Quadtree::HelitLoader(Entity * entity)
 {
-	Helit* object = Helit::CreateHelit(D3DXVECTOR2(entity->boundBox->x, entity->boundBox->y));
+	Helit* object = Helit::CreateHelit(D3DXVECTOR2(entity->boundBox->x, entity->boundBox->y), entity->direction);
 	entity->bCreated = true;
 
 	//cout << entity->boundBox->x << "\t" << entity->boundBox->y << "\t" << entity->boundBox->width << "\t" << entity->boundBox->height << "\n";

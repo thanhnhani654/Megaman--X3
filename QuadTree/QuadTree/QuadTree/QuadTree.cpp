@@ -185,6 +185,11 @@ void Quadtree::PrintObjectWhere()
 		temp = itoa(m_objects_list->at(i)->boundBox->height, temp, 10);
 		temp2 = string(temp);
 		data += temp2;
+
+		data += ' ';
+		temp = itoa(m_objects_list->at(i)->direction, temp, 10);
+		temp2 = string(temp);
+		data += temp2;
 	}
 	data += '\n';
 	f << data;

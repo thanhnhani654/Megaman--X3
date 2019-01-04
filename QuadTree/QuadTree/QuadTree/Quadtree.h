@@ -31,6 +31,7 @@ struct Entity
 	int id;
 	bool inserted;
 	Rect* boundBox;
+	int direction;
 
 	Rect* GetBoundingBox()
 	{
@@ -40,10 +41,12 @@ struct Entity
 	{
 		boundBox = new Rect();
 	}
-	Entity(int iid, Rect* irect)
+	Entity(int iid, Rect* irect, int idirect = 0)
 	{
+
 		id = iid;
 		boundBox = irect;
+		direction = idirect;
 	}
 };
 

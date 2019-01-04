@@ -42,6 +42,7 @@ struct Entity
 	bool bCreated;
 	Rect* boundBox;
 	Quadtree* node;
+	int direction;
 
 	Rect* GetBoundingBox()
 	{
@@ -52,11 +53,12 @@ struct Entity
 		boundBox = new Rect();
 		bCreated = false;
 	}
-	Entity(int iid, Rect* irect)
+	Entity(int iid, Rect* irect, int idirect = 1)
 	{
 		id = iid;
 		boundBox = irect;
 		bCreated = false;
+		direction = idirect;
 	}
 };
 
@@ -240,9 +242,12 @@ public:
 
 					int h = GetInt(line, dem);
 					dem++;
-					//cout << h << "\t";
 
-					Entity* entity = new Entity(ID, new Rect(x, y, w, h));
+					//cout << h << "\t";
+					int direction = GetInt(line, dem);
+					dem++;
+
+					Entity* entity = new Entity(ID, new Rect(x, y, w, h), direction);
 
 					PhanTichNodeID(data, entity);
 				}
