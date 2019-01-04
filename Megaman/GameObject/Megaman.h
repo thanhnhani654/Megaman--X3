@@ -48,6 +48,8 @@ private:
 	bool bClingWall;
 	bool bEndHurt;
 	bool bImmortal;
+	bool bPassingGate;
+	bool bDisableInput;
 
 	//Attribute
 	float limitDashTime;
@@ -58,8 +60,15 @@ private:
 	float hurtTimeCount;
 	float immortalTime;
 	float immortalCountTime;
+	float waitOpenGateTime;
+	float waitOpenGateTimeCount;
+	float timePassGate;
+	float timePassGateCount;
 	int hurtEffect;
 	int hurtEffectCount;
+
+
+	Gate1* tempGate;
 	
 	
 	// Method
@@ -75,6 +84,7 @@ private:
 	void Jump();
 	void ShootCountDown(float deltatime);
 	void HurtCountDown(float deltatime);
+	void PassGate(float deltatime);
 	
 
 public:

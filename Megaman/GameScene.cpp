@@ -18,13 +18,14 @@ void GameScene::Initialize()
 	megaman = Megaman::getInstance();
 	megaman->Initialize();
 	megaman->SetPosition(300, 3320);
-	megaman->SetPosition(2361, 2904);
+	//megaman->SetPosition(2361, 2904);
 	//megaman->SetPosition(0, 0);
 
 	//Spawner<NotorBanger>(D3DXVECTOR2(400,3220));				// Spawn con NotorBanger
 	//Spawner<HeadHunter>(D3DXVECTOR2(891, 3220), false);
 	//Spawner<Helit>(D3DXVECTOR2(400, 3220), true);
-	Spawner<BlastHornet>(D3DXVECTOR2(2491, 3000), true);
+	//Spawner<BlastHornet>(D3DXVECTOR2(2491, 3000), true);
+	
 
 	/*Spawner<NotorBanger>(D3DXVECTOR2(400, 3220));
 	Spawner<NotorBanger>(D3DXVECTOR2(450, 3220));
@@ -45,8 +46,7 @@ void GameScene::Initialize()
 	mapcollision1.SetName("ground");
 
 	ele.Initialize(892,2860,64,16);
-	//gate1.Initialize(440, 3216, 16, 48);
-	//gate1.Initialize(2309, 2912, 16, 48);
+	gate1.Initialize(440, 3216, 16, 48);
 
 	//Setting Camera
 	Camera::getInstance()->SetPosition(0, 0);
@@ -77,7 +77,7 @@ void GameScene::Update(float deltatime)
 	D3DXVECTOR3 temp2 = ele.GetPosition();
 	megaman->Update(deltatime);
 	ele.Update(deltatime);
-	//gate1.Update(deltatime);
+	gate1.Update(deltatime);
 
 	temp1.y = megaman->GetPosition().y - temp1.y;
 	temp2.y = ele.GetPosition().y - temp2.y;
@@ -114,5 +114,5 @@ void GameScene::Draw()
 	HUD::getInstance()->Draw();
 
 	ele.Draw();
-	//gate1.Draw();
+	gate1.Draw();
 }

@@ -67,6 +67,7 @@ protected:
 	bool bLoop;
 	int center;
 	bool customCenter = false;
+	bool stopAnimation = false;
 public:
 
 
@@ -88,6 +89,7 @@ public:
 	void SetAnimation(string name,bool isLoop = true);
 	void SetFrameRate(int fr);
 	void SetCenter(int i);			//1: Top Left		Top-Right		Bottom-Left		Bottom-Right
+	void ToggleAnimationClip();
 	
 	//Debug
 	static void PrintSpritePos(int mode);			// mode{1(Group), 2(Sheet)}

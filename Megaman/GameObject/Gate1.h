@@ -23,6 +23,9 @@ public:
 		this->name = name;
 	}
 
+	void GateOpen();
+	void GateClosed();
+
 	void Update(float deltatime);
 	void Draw();
 };
