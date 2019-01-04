@@ -43,7 +43,7 @@ void main()
 	cout << endl << endl;
 
 	tree->PrintObjectWhere();
-
+	//tree->PrintObject();
 	system("pause");
 	return;
 }

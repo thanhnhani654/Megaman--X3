@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <algorithm>
 
 using namespace std;
 
@@ -28,6 +29,7 @@ struct Rect
 struct Entity
 {
 	int id;
+	bool inserted;
 	Rect* boundBox;
 
 	Rect* GetBoundingBox()
@@ -78,5 +80,7 @@ public:
 	void           Insert(Entity* entity);
 
 	void		   PrintObjectWhere();
+	void		   PrintObject();
+	std::vector<Entity*>* deleteElement(Entity* entity);
 };
 
