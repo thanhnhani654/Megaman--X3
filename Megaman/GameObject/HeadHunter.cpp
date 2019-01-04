@@ -160,6 +160,7 @@ void HeadHunter::Initialize()
 	box.DynamicInitialize(this, 40, 32);
 	box.SetPivot(20, 16);
 	sprite.get()->SetAnimation("headgunner");
+	InitialzieHPComponent(3, 1);
 
 	changeStateTime = 3.f;
 	changeStateTimeCount = changeStateTime;
@@ -169,6 +170,8 @@ void HeadHunter::Initialize()
 	fireInteval = 0.5;
 	fireIntevalCount = 0;
 	fireTimesCount = 0;
+	timeToDead = 0.5;
+	timeToDeadCount = timeToDead;
 
 	listHeadHunter.push_back(this);
 }
@@ -176,10 +179,11 @@ void HeadHunter::Initialize()
 void HeadHunter::ReInitialize(D3DXVECTOR2 pos, int direction)
 {
 	Enable();
-
+	InitialzieHPComponent(3, 1);
 	changeStateTimeCount = changeStateTime;
 
 	waitForFireTimeCount = waitForFireTime;
+	timeToDeadCount = timeToDead;
 
 	this->SetPosition(pos);
 
@@ -200,9 +204,18 @@ void HeadHunter::UpdateInput(float deltatime)
 
 void HeadHunter::Update(float deltatime)
 {
+	if (GetHPComponent()->IsDead() && state != eHeadHunterState::onHHDead)
+	{
+		state = eHeadHunterState::onHHDead;
+		sprite.get()->SetAnimation("explosive_1", false);
+		GetMoveComponent()->IdleX();
+		GetMoveComponent()->IdleY();
+	}
+	UpdateState(deltatime);
+
 	OnCollision(deltatime);
 
-	UpdateState(deltatime);
+	//UpdateState(deltatime);
 
 	FireBulletUpdate(deltatime);
 	FireRocketUpdate(deltatime);
@@ -235,15 +248,32 @@ void HeadHunter::UpdateState(float deltatime)
 			changeStateTimeCount = changeStateTime;
 			ResetFireBulletTime();
 		}
-
-
+		break;
+	case onHHDead:
+		timeToDeadCount -= deltatime;
+		if (timeToDeadCount < 0)
+			Disable();
 		break;
 	}
 }
 
 void HeadHunter::OnCollision(float deltatime)
 {
-	
+	// Kiểm tra va chạm với đạn của Megaman
+	std::vector<NormalBullet*> *listBullet = &NormalBullet::listNormalBullet;
+	if (!listBullet->empty())
+	{
+		for (std::vector<NormalBullet*>::iterator it = listBullet->begin(); it != listBullet->end(); it++)
+		{
+			if ((*it)->bDisable)
+				continue;
+			if (!Collision::IsIntersection(this->box.GetBox(), (*it)->box.GetBox()))
+				continue;
+			(*it)->Disable();
+			// Code Ở đây đoạn trừ máu của enemy
+			this->GetHPComponent()->DoDamage((*it)->damage, (*it)->bGodMode);
+		}
+	}
 }
 
 void HeadHunter::Draw()

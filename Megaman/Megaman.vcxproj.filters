@@ -52,12 +52,6 @@
     <ClCompile Include="GameObject\Megaman.cpp">
       <Filter>Source\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject\NormalBullet.cpp">
-      <Filter>Source\GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject\NotorBanger.cpp">
-      <Filter>Source\GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="Utility\Spawner.cpp">
       <Filter>Source\GameObject</Filter>
     </ClCompile>
@@ -70,28 +64,7 @@
     <ClCompile Include="GameObject\Elevator.cpp">
       <Filter>Source\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject\HeadHunter.cpp">
-      <Filter>Source\GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject\Helit.cpp">
-      <Filter>Source\GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject\NotorBullet.cpp">
-      <Filter>Source\GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject\Rocket.cpp">
-      <Filter>Source\GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject\HelitRocket.cpp">
-      <Filter>Source\GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="GameObject\Gate1.cpp">
-      <Filter>Source\GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject\BlastHornet.cpp">
-      <Filter>Source\GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject\Bee.cpp">
       <Filter>Source\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="GameObject\HUD.cpp">
@@ -99,6 +72,33 @@
     </ClCompile>
     <ClCompile Include="GameObject\Scroller.cpp">
       <Filter>Source\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\HeadHunter.cpp">
+      <Filter>Source\GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\Helit.cpp">
+      <Filter>Source\GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\NotorBanger.cpp">
+      <Filter>Source\GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\HelitRocket.cpp">
+      <Filter>Source\GameObject\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\NotorBullet.cpp">
+      <Filter>Source\GameObject\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\NormalBullet.cpp">
+      <Filter>Source\GameObject\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\Rocket.cpp">
+      <Filter>Source\GameObject\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\BlastHornet.cpp">
+      <Filter>Source\GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\Bee.cpp">
+      <Filter>Source\GameObject\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -154,12 +154,6 @@
     <ClInclude Include="GameObject\Megaman.h">
       <Filter>Header\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="GameObject\NormalBullet.h">
-      <Filter>Header\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject\NotorBanger.h">
-      <Filter>Header\GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="GameObject\Map.h">
       <Filter>Header\GameObject</Filter>
     </ClInclude>
@@ -169,28 +163,7 @@
     <ClInclude Include="GameObject\Elevator.h">
       <Filter>Header\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="GameObject\HeadHunter.h">
-      <Filter>Header\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject\Helit.h">
-      <Filter>Header\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject\NotorBullet.h">
-      <Filter>Header\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject\Rocket.h">
-      <Filter>Header\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject\HelitRocket.h">
-      <Filter>Header\GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="GameObject\Gate1.h">
-      <Filter>Header\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject\BlastHornet.h">
-      <Filter>Header\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject\Bee.h">
       <Filter>Header\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="GameObject\HUD.h">
@@ -198,6 +171,33 @@
     </ClInclude>
     <ClInclude Include="GameObject\Scroller.h">
       <Filter>Header\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\HeadHunter.h">
+      <Filter>Header\GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\Helit.h">
+      <Filter>Header\GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\NotorBanger.h">
+      <Filter>Header\GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\HelitRocket.h">
+      <Filter>Header\GameObject\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\NormalBullet.h">
+      <Filter>Header\GameObject\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\NotorBullet.h">
+      <Filter>Header\GameObject\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\Rocket.h">
+      <Filter>Header\GameObject\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\BlastHornet.h">
+      <Filter>Header\GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\Bee.h">
+      <Filter>Header\GameObject\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -218,6 +218,18 @@
     </Filter>
     <Filter Include="QuadTree">
       <UniqueIdentifier>{9c64a454-7d61-4fc2-b629-6927dc2af800}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\GameObject\Enemy">
+      <UniqueIdentifier>{0dc6a24e-3591-4a5f-99d7-f3b8f4eb9610}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\GameObject\Enemy">
+      <UniqueIdentifier>{e76128a5-8c8d-4ac1-b8a1-1d493134ef68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\GameObject\Bullet">
+      <UniqueIdentifier>{70421411-47f8-49ba-9dde-106a0bba78d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\GameObject\Bullet">
+      <UniqueIdentifier>{3fe30036-2d48-4adc-87f6-426a12a10eb9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

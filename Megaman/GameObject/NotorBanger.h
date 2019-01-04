@@ -4,8 +4,8 @@
 #include "NormalBullet.h"
 #include "NotorBullet.h"
 
-#define PRINT_SIZE FALSE
-#define PRINT_SIZE_ENABLE_OBJECT FALSE
+#define PRINT_SIZE TRUE
+#define PRINT_SIZE_ENABLE_OBJECT TRUE
 
 
 //Ghép 2 trạng thái Fire với Posture lại
@@ -13,7 +13,8 @@ enum eNotorBangerState
 {
 	Jump,
 	Fire1,
-	Fire2
+	Fire2,
+	onNBDead
 };
 
 class NotorBanger : public Creature
@@ -33,6 +34,8 @@ private:
 	float fireInteval;
 	float fireIntevalCount;
 	float fireTimesCount;
+	float timeToDead;
+	float timeToDeadCount;
 
 	
 	float demTime;

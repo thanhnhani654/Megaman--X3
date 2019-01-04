@@ -8,6 +8,7 @@ void Megaman::Initialize()
 	GetMoveComponent()->EnableGravity();
 	GetMoveComponent()->SetSpeed(150);
 	GetMoveComponent()->SetJumpPower(100);
+	InitialzieHPComponent(10, 1);
 
 	//Thuộc tính riêng biệt
 	limitDashTime = 0.4f;
@@ -34,7 +35,7 @@ void Megaman::Initialize()
 	box.SetPivot(8,16);
 
 	GetTagMethod()->AddTag(eTag::PlayerTag);
-	
+	GetHPComponent()->ToggleGodMode();
 }
 
 void Megaman::Ghost_Initialize(){}
@@ -317,11 +318,11 @@ void Megaman::FireBullet()
 		if ((*it)->bDisable)
 		{
 			if (chargeBar < 1)
-				(*it)->Re_Initialize(GetPosition().x, GetPosition().y, direction,1);
+				(*it)->Re_Initialize(GetPosition().x, GetPosition().y, direction,1, GetHPComponent()->GetDamage(), GetHPComponent()->IsGodMode());
 			else if (chargeBar < 2 && chargeBar >= 1)
-				(*it)->Re_Initialize(GetPosition().x, GetPosition().y, direction, 2);
+				(*it)->Re_Initialize(GetPosition().x, GetPosition().y, direction, 2, GetHPComponent()->GetDamage(), GetHPComponent()->IsGodMode());
 			else
-				(*it)->Re_Initialize(GetPosition().x, GetPosition().y, direction, 3);
+				(*it)->Re_Initialize(GetPosition().x, GetPosition().y, direction, 3, GetHPComponent()->GetDamage(), GetHPComponent()->IsGodMode());
 			chargeBar = 0;
 			bShoot = true;
 			return;
@@ -329,11 +330,11 @@ void Megaman::FireBullet()
 	}
 	NormalBullet* bullet1 = new NormalBullet();
 	if (chargeBar < 1)
-		bullet1->Ghost_Initialize(GetPosition().x, GetPosition().y, direction, 1);
+		bullet1->Ghost_Initialize(GetPosition().x, GetPosition().y, direction, 1, GetHPComponent()->GetDamage(), GetHPComponent()->IsGodMode());
 	else if (chargeBar < 2 && chargeBar >= 1)
-		bullet1->Ghost_Initialize(GetPosition().x, GetPosition().y, direction, 2);
+		bullet1->Ghost_Initialize(GetPosition().x, GetPosition().y, direction, 2, GetHPComponent()->GetDamage(), GetHPComponent()->IsGodMode());
 	else
-		bullet1->Ghost_Initialize(GetPosition().x, GetPosition().y, direction, 3);
+		bullet1->Ghost_Initialize(GetPosition().x, GetPosition().y, direction, 3, GetHPComponent()->GetDamage(), GetHPComponent()->IsGodMode());
 	chargeBar = 0;
 	bShoot = true;
 

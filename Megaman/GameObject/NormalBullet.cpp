@@ -2,7 +2,7 @@
 
 std::vector<NormalBullet*> NormalBullet::listNormalBullet;
 
-void NormalBullet::Ghost_Initialize(float x, float y, eDirection idirection, int lv)
+void NormalBullet::Ghost_Initialize(float x, float y, eDirection idirection, int lv, float dmg, bool godMode)
 {
 	GameObject::Ghost_Initialize();
 	lifeTime = 5.0f;
@@ -10,6 +10,9 @@ void NormalBullet::Ghost_Initialize(float x, float y, eDirection idirection, int
 	SetPosition(x, y);
 	this->direction = idirection;
 	speed = 5;
+	damage = dmg;
+	bGodMode = godMode;
+
 	box.DynamicInitialize(this, 8, 6);
 	switch (lv)
 	{
@@ -32,13 +35,15 @@ void NormalBullet::Ghost_Initialize(float x, float y, eDirection idirection, int
 	listNormalBullet.push_back(this);
 }
 
-void NormalBullet::Re_Initialize(float x, float y, eDirection idirection, int lv)
+void NormalBullet::Re_Initialize(float x, float y, eDirection idirection, int lv, float dmg, bool godMode)
 {
 	lifeTime = 5.0f;
 	bDisable = false;
 	SetPosition(x, y);
 	this->direction = idirection;
 	speed = 5;
+	damage = dmg;
+	bGodMode = godMode;
 
 	switch (lv)
 	{
@@ -55,6 +60,85 @@ void NormalBullet::Re_Initialize(float x, float y, eDirection idirection, int lv
 
 	if (idirection == eDirection::Left)
 		sprite.get()->FlipLeft();
+}
+
+void NormalBullet::OnCollision(float deltatime)
+{
+	std::vector<NotorBanger*> *listNotorBanger = &NotorBanger::listNotorBanger;
+	if (!listNotorBanger->empty() && !DEBUG_IMMORTAL)
+	{
+		for (std::vector<NotorBanger*>::iterator it = listNotorBanger->begin(); it != listNotorBanger->end(); it++)
+		{
+			if ((*it)->IsDisable())
+				continue;
+
+			if (!Collision::IsIntersection(Collision::GetBroadphaseBox(this->box, deltatime), Collision::GetBroadphaseBox((*it)->box, deltatime)))
+				continue;
+			//cout << "A" << endl;
+			//(*it)->GetHPComponent()->DoDamage(damage, bGodMode);
+			//Disable();
+		}
+	}
+	///////////////Check With HeadGunner////////////////////////////
+	std::vector<HeadHunter*> *listHeadHunter = &HeadHunter::listHeadHunter;
+	if (!listHeadHunter->empty() && !DEBUG_IMMORTAL)
+	{
+		for (std::vector<HeadHunter*>::iterator it = listHeadHunter->begin(); it != listHeadHunter->end(); it++)
+		{
+			if ((*it)->IsDisable())
+				continue;
+
+			if (!Collision::IsIntersection(Collision::GetBroadphaseBox(this->box, deltatime), Collision::GetBroadphaseBox((*it)->box, deltatime)))
+				continue;
+			(*it)->GetHPComponent()->DoDamage(damage, bGodMode);
+			Disable();
+		}
+	}
+	///////////////Check With Helit////////////////////////////
+	std::vector<Helit*> *listHelit = &Helit::listHelit;
+	if (!listHelit->empty() && !DEBUG_IMMORTAL)
+	{
+		for (std::vector<Helit*>::iterator it = listHelit->begin(); it != listHelit->end(); it++)
+		{
+			if ((*it)->IsDisable())
+				continue;
+
+			if (!Collision::IsIntersection(Collision::GetBroadphaseBox(this->box, deltatime), Collision::GetBroadphaseBox((*it)->box, deltatime)))
+				continue;
+			(*it)->GetHPComponent()->DoDamage(damage, bGodMode);
+			Disable();
+		}
+	}
+	///////////////Check With NotorBullet////////////////////////////
+	std::vector<NotorBullet*> *listNotorBullet = &NotorBullet::listNotorBullet;
+	if (!listNotorBullet->empty() && !DEBUG_IMMORTAL)
+	{
+		for (std::vector<NotorBullet*>::iterator it = listNotorBullet->begin(); it != listNotorBullet->end(); it++)
+		{
+			if ((*it)->bDisable)
+				continue;
+
+			if (!Collision::IsIntersection(Collision::GetBroadphaseBox(this->box, deltatime), Collision::GetBroadphaseBox((*it)->box, deltatime)))
+				continue;
+			(*it)->GetHPComponent()->DoDamage(damage, bGodMode);
+			Disable();
+		}
+	}
+	///////////////Check With NotorBullet////////////////////////////
+	std::vector<Rocket*> *listRocket = &Rocket::listRocket;
+	if (!listRocket->empty() && !DEBUG_IMMORTAL)
+	{
+		for (std::vector<Rocket*>::iterator it = listRocket->begin(); it != listRocket->end(); it++)
+		{
+			if ((*it)->bDisable)
+				continue;
+
+			if (!Collision::IsIntersection(Collision::GetBroadphaseBox(this->box, deltatime), Collision::GetBroadphaseBox((*it)->box, deltatime)))
+				continue;
+			(*it)->GetHPComponent()->DoDamage(damage, bGodMode);
+			Disable();
+		}
+	}
 }
 
 void NormalBullet::CountDown(float deltatime)
@@ -76,6 +160,7 @@ void NormalBullet::Update(float deltatime)
 	else
 		GetPosition_Ptr()->x += speed;
 	box.SetPosition();
+	//OnCollision(deltatime);
 
 	CountDown(deltatime);
 	if (lifeTime <= 0)

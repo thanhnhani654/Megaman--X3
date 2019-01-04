@@ -381,6 +381,13 @@ void Quadtree::DynamicunLoad(float deltatime)
 	{
 		if (listNotorBangerLinker[i]->bDisable)
 			continue;
+
+		if (listNotorBangerLinker[i]->object->bDisable)
+		{
+			listNotorBangerLinker[i]->bDisable = true;
+			continue;
+		}
+
 		Rect objectRect;
 		objectRect.x = listNotorBangerLinker[i]->object->GetPosition().x;
 		objectRect.y = listNotorBangerLinker[i]->object->GetPosition().y;
@@ -399,6 +406,12 @@ void Quadtree::DynamicunLoad(float deltatime)
 	{
 		if (listHeadHunterLinker[i]->bDisable)
 			continue;
+
+		if (listHeadHunterLinker[i]->object->IsDisable())
+		{
+			listHeadHunterLinker[i]->bDisable = true;
+			continue;
+		}
 		Rect objectRect;
 		objectRect.x = listHeadHunterLinker[i]->object->GetPosition().x;
 		objectRect.y = listHeadHunterLinker[i]->object->GetPosition().y;
@@ -417,6 +430,13 @@ void Quadtree::DynamicunLoad(float deltatime)
 	{
 		if (listHelitLinker[i]->bDisable)
 			continue;
+
+		if (listHelitLinker[i]->object->IsDisable())
+		{
+			listHelitLinker[i]->bDisable = true;
+			continue;
+		}
+
 		Rect objectRect;
 		objectRect.x = listHelitLinker[i]->object->GetPosition().x;
 		objectRect.y = listHelitLinker[i]->object->GetPosition().y;

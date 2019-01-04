@@ -11,7 +11,8 @@
 enum eHeadHunterState
 {
 	FireRocket,
-	FireBullet
+	FireBullet,
+	onHHDead
 };
 
 class HeadHunter : public Creature
@@ -31,6 +32,8 @@ private:
 	float fireInteval;
 	float fireIntevalCount;
 	float fireTimesCount;
+	float timeToDead;
+	float timeToDeadCount;
 
 	bool bDisable;
 
