@@ -42,7 +42,7 @@ public:
 	{
 		bFollowCamera = true;
 		bFreeMode = false;
-		bStageCamera = true;
+		bStageCamera = false;
 		stage = eCamerastage::khong;
 		position.x = 0;
 		position.y = 0;
