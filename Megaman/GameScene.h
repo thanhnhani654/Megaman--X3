@@ -19,6 +19,7 @@
 #include "GameObject\Bee.h"
 #include "GameObject\HUD.h"
 #include "GameObject\Item.h"
+#include "GameObject\Layer2.h"
 
 #include "Quadtree.h"
 using namespace std;

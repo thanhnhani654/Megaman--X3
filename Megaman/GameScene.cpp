@@ -19,8 +19,10 @@ void GameScene::Initialize()
 	megaman->Initialize();
 	megaman->SetPosition(300, 3320);
 	//MapCollision::CreateMapCollision(0, 0, 3200, 3000, 50);
-	//megaman->SetPosition(2361, 2904);
+	megaman->SetPosition(2361, 2904);
 	//megaman->SetPosition(0, 0);
+
+	Layer2::CreateLayer2(2200, 2904);
 
 	//Spawner<NotorBanger>(D3DXVECTOR2(400,3220));				// Spawn con NotorBanger
 	//Spawner<HeadHunter>(D3DXVECTOR2(891, 3220), false);
@@ -109,6 +111,7 @@ void GameScene::Draw()
 	BlastHornet::DrawAll();
 	Bee::DrawAll();
 	Item::DrawAll();
+	Layer2::DrawAll();
 	//HUD::getInstance()->Draw();
 
 	ele.Draw();
