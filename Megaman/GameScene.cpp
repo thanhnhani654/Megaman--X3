@@ -19,7 +19,7 @@ void GameScene::Initialize()
 	megaman->Initialize();
 	megaman->SetPosition(300, 3320);
 	//MapCollision::CreateMapCollision(0, 0, 3200, 3000, 50);
-	megaman->SetPosition(2361, 2904);
+	//megaman->SetPosition(2361, 2904);
 	//megaman->SetPosition(0, 0);
 
 	//Spawner<NotorBanger>(D3DXVECTOR2(400,3220));				// Spawn con NotorBanger

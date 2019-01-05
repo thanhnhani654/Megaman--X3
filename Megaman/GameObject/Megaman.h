@@ -85,6 +85,7 @@ private:
 	void ShootCountDown(float deltatime);
 	void HurtCountDown(float deltatime);
 	void PassGate(float deltatime);
+	void CameraController(float deltatime);
 	
 
 public:

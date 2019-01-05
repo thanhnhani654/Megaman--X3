@@ -4,8 +4,8 @@
 #include <iostream>
 #include "../Controllable.h"
 
-#define CameraWidth 400
-#define CameraHeight 400
+#define CameraWidth 300
+#define CameraHeight 300
 #define PRINT_POSITION FALSE
 
 enum eCamerastage
@@ -25,7 +25,7 @@ private:
 	bool bFollowCamera;
 	bool bFreeMode;
 	bool bStageCamera;
-	float speed;
+	
 	D3DXVECTOR2 size;
 	eCamerastage stage;
 
@@ -35,8 +35,13 @@ private:
 	float limitLeftX;
 	float limitTopY;
 	float limitBottomY;
+	float speed;
 
 public:
+	
+
+	float GetSpeed() { return speed; }
+
 	static Camera* getInstance();
 	Camera()
 	{
@@ -78,6 +83,8 @@ public:
 	void UpdateCameraStage(float deltatime, D3DXVECTOR2 fpos);
 
 	void UpdateInput(float deltatime);
+
+	bool IsFollowCamera();
 
 	void OnKeyDown(int keycode);
 };

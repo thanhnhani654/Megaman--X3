@@ -12,11 +12,19 @@ Camera* Camera::getInstance()
 void Camera::ToggleFollowCamera()
 {
 	bFollowCamera = !bFollowCamera;
+	bFreeMode = true;
 }
 
 void Camera::UpdateInput(float deltatime)
 {
 	//_ProcessKeyBoard();
+}
+
+bool Camera::IsFollowCamera()
+{
+	if (!bFollowCamera && bFreeMode)
+		return true;
+	return false;
 }
 
 void Camera::Update(float deltatime, D3DXVECTOR2 fpos)

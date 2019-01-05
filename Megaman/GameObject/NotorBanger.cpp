@@ -71,7 +71,7 @@ void NotorBanger::Enable()
 void NotorBanger::Initialize()
 {
 	Creature::Initialize();
-	GetMoveComponent()->EnableGravity();
+	//GetMoveComponent()->EnableGravity();
 	GetMoveComponent()->SetSpeed(150);
 	GetMoveComponent()->SetJumpPower(80);
 	
@@ -99,6 +99,7 @@ void NotorBanger::Initialize()
 
 void NotorBanger::ReInitialize(D3DXVECTOR2 pos, int direct)
 {
+	GetMoveComponent()->DisableGravity();
 	bJumping = false;
 	InitialzieHPComponent(3, 1);
 	state = eNotorBangerState::Jump;
@@ -172,12 +173,14 @@ void NotorBanger::UpdateState(float deltatime)
 
 		if (bFireStyle)
 		{
+			GetMoveComponent()->EnableGravity();
 			bFire1 = true;
 			state = eNotorBangerState::Fire1;
 			sprite.get()->SetAnimation("notorbanger_change_posture_1",false);
 		}
 		else
 		{
+			GetMoveComponent()->EnableGravity();
 			bFire2 = true;
 			state = eNotorBangerState::Fire2;
 			sprite.get()->SetAnimation("notorbanger_change_posture_2");

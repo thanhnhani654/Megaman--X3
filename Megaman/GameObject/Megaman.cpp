@@ -419,6 +419,24 @@ void Megaman::PassGate(float deltatime)
 
 }
 
+void Megaman::CameraController(float deltatime)
+{
+	Camera* camera = Camera::getInstance();
+	float speed = camera->GetSpeed();
+	
+	if (!camera->IsFollowCamera())
+		return;
+
+	if (IsKeyDown(DIK_RIGHT))
+		camera->SetPosition(camera->GetPosition().x + speed, camera->GetPosition().y);
+	if (IsKeyDown(DIK_LEFT))
+		camera->SetPosition(camera->GetPosition().x - speed, camera->GetPosition().y);
+	if (IsKeyDown(DIK_DOWN))
+		camera->SetPosition(camera->GetPosition().x, camera->GetPosition().y - speed);
+	if (IsKeyDown(DIK_UP))
+		camera->SetPosition(camera->GetPosition().x, camera->GetPosition().y + speed);
+}
+
 void Megaman::UpdateInput(float deltatime)
 {
 	//if (!bDisableInput)
@@ -437,6 +455,7 @@ void Megaman::UpdateInput(float deltatime)
 	this->box.SetPosition();
 
 	OnCollision(deltatime);
+	CameraController(deltatime);
 }
 
 void Megaman::Update(float deltatime)
@@ -831,6 +850,9 @@ void Megaman::OnKeyUp(int Keycode)
 		break;
 	case DIK_J:
 		FireBullet();
+		break;
+	case DIK_P:
+		Camera::getInstance()->ToggleFollowCamera();
 	default:
 		break;
 	}

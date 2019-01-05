@@ -326,7 +326,7 @@ void Quadtree::DynamicLoad(float deltatime)
 				objectRect.width = m_objects_list->at(i)->boundBox->width;
 				objectRect.height = m_objects_list->at(i)->boundBox->height;
 
-				if (m_objects_list->at(i)->id != 0) 
+				if (m_objects_list->at(i)->id != 1) 
 				{
 					if (IsContain(rect, objectRect))
 					{
@@ -335,12 +335,18 @@ void Quadtree::DynamicLoad(float deltatime)
 				}
 				else
 				{
-					rect.height += 50;
-					rect.y -= 25;
+					rect.x -= 100;
+					rect.width += 200;
+					rect.height += 200;
+					rect.y -= 100;
 					if (IsContain(rect, objectRect))
 					{
 						ObjectLoader(m_objects_list->at(i));
 					}
+					rect.x += 100;
+					rect.width -= 200;
+					rect.height -= 200;
+					rect.y += 100;
 				}
 			}
 		}
@@ -368,13 +374,20 @@ void Quadtree::DynamicunLoad(float deltatime)
 		//if (!IsContain(objectRect, rect))
 		//if (listMapCollisionLinker[i]->entity->boundBox->x == 1086)
 		//	cout << listMapCollisionLinker[i]->entity->boundBox->x << "\t" << listMapCollisionLinker[i]->entity->boundBox->y << endl;
-
+		rect.x -= 100;
+		rect.width += 200;
+		rect.height += 200;
+		rect.y -= 100;
 		if (!IsContain(*listMapCollisionLinker[i]->entity->node->m_region, rect))
 		{
 			if (PRINT_DEBUG)
 				cout << "Delete MapCollision" << endl;
 			listMapCollisionLinker[i]->Disable();
 		}
+		rect.x += 100;
+		rect.width -= 200;
+		rect.height -= 200;
+		rect.y += 100;
 	}
 
 	for (int i = 0; i < listNotorBangerLinker.size(); i++)
