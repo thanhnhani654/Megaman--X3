@@ -51,6 +51,7 @@ protected:
 	static LPDIRECT3DTEXTURE9 _Image3;
 	static LPDIRECT3DTEXTURE9 _Image4;
 	static LPDIRECT3DTEXTURE9 _Image5;
+	static LPDIRECT3DTEXTURE9 _Image6;
 	
 	static LPD3DXSPRITE _SpriteHandler;
 	static LPDIRECT3DDEVICE9 d3ddv;	

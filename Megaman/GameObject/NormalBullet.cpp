@@ -1,4 +1,4 @@
-#include "NormalBullet.h"
+﻿#include "NormalBullet.h"
 
 std::vector<NormalBullet*> NormalBullet::listNormalBullet;
 
@@ -62,6 +62,7 @@ void NormalBullet::Re_Initialize(float x, float y, eDirection idirection, int lv
 		sprite.get()->FlipLeft();
 }
 
+//Không Dùng Tới
 void NormalBullet::OnCollision(float deltatime)
 {
 	std::vector<NotorBanger*> *listNotorBanger = &NotorBanger::listNotorBanger;
@@ -131,6 +132,22 @@ void NormalBullet::OnCollision(float deltatime)
 		for (std::vector<Rocket*>::iterator it = listRocket->begin(); it != listRocket->end(); it++)
 		{
 			if ((*it)->bDisable)
+				continue;
+
+			if (!Collision::IsIntersection(Collision::GetBroadphaseBox(this->box, deltatime), Collision::GetBroadphaseBox((*it)->box, deltatime)))
+				continue;
+			(*it)->GetHPComponent()->DoDamage(damage, bGodMode);
+			Disable();
+		}
+	}
+
+	///////////////Check With BlastHornet////////////////////////////
+	std::vector<BlastHornet*> *listBlastHornet = &BlastHornet::listBlastHornet;
+	if (!listBlastHornet->empty() && !DEBUG_IMMORTAL)
+	{
+		for (std::vector<BlastHornet*>::iterator it = listBlastHornet->begin(); it != listBlastHornet->end(); it++)
+		{
+			if ((*it)->IsDisable())
 				continue;
 
 			if (!Collision::IsIntersection(Collision::GetBroadphaseBox(this->box, deltatime), Collision::GetBroadphaseBox((*it)->box, deltatime)))

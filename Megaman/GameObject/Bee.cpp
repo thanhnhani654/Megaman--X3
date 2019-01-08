@@ -1,4 +1,4 @@
-#include "Bee.h"
+﻿#include "Bee.h"
 
 std::vector<Bee*> Bee::listBee;
 
@@ -57,7 +57,6 @@ void Bee::Initialize()
 	box.SetPivot(12, 11);
 	sprite.get()->SetAnimation("bee");
 	state = eBeeState::FightADie;
-	megaman = Megaman::getInstance();
 
 	timeToDie = 2;
 	timeToDieCount = timeToDie;
@@ -111,8 +110,8 @@ void Bee::UpdateState(float deltatime)
 	case FightADie:
 		break;
 	case ForHonor:
-		updatePos.x = megaman->GetPosition().x + offset.x;
-		updatePos.y = megaman->GetPosition().y + offset.y;
+		updatePos.x = Megaman::getInstance()->GetPosition().x + offset.x;
+		updatePos.y = Megaman::getInstance()->GetPosition().y + offset.y;
 		this->SetPosition(updatePos);	
 	case NoHonor:
 		timeToDieCount -= deltatime;
@@ -132,8 +131,33 @@ void Bee::UpdateState(float deltatime)
 
 void Bee::OnCollision(float deltatime)
 {
+	// Kiểm tra va chạm với đạn của Megaman
+	std::vector<NormalBullet*> *listBullet = &NormalBullet::listNormalBullet;
+	if (!listBullet->empty())
+	{
+		for (std::vector<NormalBullet*>::iterator it = listBullet->begin(); it != listBullet->end(); it++)
+		{
+			if ((*it)->bDisable)
+				continue;
+			if (!this->box.isEnable())
+				continue;
+			if (!Collision::IsIntersection(this->box.GetBox(), (*it)->box.GetBox()))
+				continue;
+			state = eBeeState::Dying;
+			sprite.get()->SetAnimation("bee_self_destruct");
+			this->box.Disable();
+			GetMoveComponent()->IdleX();
+			GetMoveComponent()->IdleY();
+			(*it)->Disable();
+			return;
+			// Code Ở đây đoạn trừ máu của enemy
+			//this->GetHPComponent()->DoDamage((*it)->damage, (*it)->bGodMode);
+		}
+	}
+
 	if (state != eBeeState::FightADie)
 		return;
+
 	std::vector<MapCollision*> *listMapCollsion = &MapCollision::listMapCollision;
 	if (!listMapCollsion->empty())
 	{
@@ -159,14 +183,14 @@ void Bee::OnCollision(float deltatime)
 			return;
 	}
 
-	if (!Collision::IsIntersection(Collision::GetBroadphaseBox(this->box, deltatime), Collision::GetBroadphaseBox(megaman->box, deltatime)))
+	if (!Collision::IsIntersection(Collision::GetBroadphaseBox(this->box, deltatime), Collision::GetBroadphaseBox(Megaman::getInstance()->box, deltatime)))
 		return;
 	
 	GetMoveComponent()->IdleX();
 	GetMoveComponent()->IdleY();
 
-	offset.x = this->GetPosition().x - megaman->GetPosition().x;
-	offset.y = this->GetPosition().y - megaman->GetPosition().y;
+	offset.x = this->GetPosition().x - Megaman::getInstance()->GetPosition().x;
+	offset.y = this->GetPosition().y - Megaman::getInstance()->GetPosition().y;
 
 	state = eBeeState::ForHonor;
 }

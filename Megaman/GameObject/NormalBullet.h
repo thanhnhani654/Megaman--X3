@@ -4,10 +4,11 @@
 #include <vector>
 #include "../Component/Collision.h"
 //#include "Bee.h"
-//#include "BlastHornet.h"
+#include "BlastHornet.h"
 #include "HeadHunter.h"
 #include "Helit.h"
 #include "NotorBanger.h"
+#include "Bee.h"
 
 class NormalBullet : public GameObject
 {

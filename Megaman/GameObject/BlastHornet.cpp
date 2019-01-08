@@ -26,6 +26,14 @@ void BlastHornet::Disable()
 {
 	bDisable = true;
 	this->box.Disable();
+	bCanReInit = true;
+}
+
+void BlastHornet::Disable(int i)
+{
+	bDisable = true;
+	this->box.Disable();
+	bCanReInit = false;
 }
 
 void BlastHornet::Enable()
@@ -58,8 +66,8 @@ void BlastHornet::Initialize()
 	moveState = eMysteryState::giaidoan1;
 	nextMove = 0;
 	prevMove = 0;
-
-	megaman = Megaman::getInstance();
+	timeToDead = 0.5;
+	timeToDeadCount = timeToDead;
 
 	listBlastHornet.push_back(this);
 }
@@ -70,6 +78,7 @@ void BlastHornet::ReInitialize(D3DXVECTOR2 pos, int direction)
 
 	changeStateTimeCount = changeStateTime;
 
+	InitialzieHPComponent(30, 1);
 
 	this->SetPosition(pos);
 
@@ -210,7 +219,7 @@ void BlastHornet::RandomNextMove()
 
 void BlastHornet::Fire()
 {
-	D3DXVECTOR2 target = megaman->GetPosition();
+	D3DXVECTOR2 target = Megaman::getInstance()->GetPosition();
 	Bee* bee = Bee::CreateBee(this->GetPosition(), this->GetDirection());
 	bee->MoveTo(target);
 
@@ -234,7 +243,7 @@ void BlastHornet::Fire()
 
 int BlastHornet::GetDirection()
 {
-	if (this->GetPosition().x - megaman->GetPosition().x > 0)
+	if (this->GetPosition().x - Megaman::getInstance()->GetPosition().x > 0)
 		return 1;
 	return 0;
 }
@@ -254,6 +263,14 @@ void BlastHornet::UpdateInput(float deltatime)
 
 void BlastHornet::Update(float deltatime)
 {
+	if (GetHPComponent()->IsDead() && state != eBlastHornetState::onBHDead)
+	{
+		state = eBlastHornetState::onBHDead;
+		sprite.get()->SetAnimation("explosive_1", false);
+		GetMoveComponent()->IdleX();
+		GetMoveComponent()->IdleY();
+	}
+
 	OnCollision(deltatime);
 
 	GetMoveComponent()->UpdateMovement(deltatime);
@@ -285,9 +302,9 @@ void BlastHornet::UpdateState(float deltatime)
 			RandomNextMove();
 			detectTargetTimeCount = detectTargetTime;
 			state = eBlastHornetState::DirectAttack;
-			targetLocation = megaman->GetPosition();
+			targetLocation = Megaman::getInstance()->GetPosition();
 			
-			MoveTo(megaman->GetPosition(), attackTime);
+			MoveTo(Megaman::getInstance()->GetPosition(), attackTime);
 			sprite.get()->SetAnimation("blasthornet_sting", false);
 		}
 		break;
@@ -347,6 +364,14 @@ void BlastHornet::UpdateState(float deltatime)
 		PhuongTrinhChuyenDongTron(timeLine);
 		timeLine += deltatime * 1.5f;
 		break;
+	case eBlastHornetState::onBHDead:
+		timeToDeadCount -= deltatime;
+		if (timeToDeadCount < 0)
+		{
+			//Item::CreateItem(this->GetPosition(), 0);
+			Disable(1);
+		}
+		break;
 	}
 	
 
@@ -354,7 +379,23 @@ void BlastHornet::UpdateState(float deltatime)
 
 void BlastHornet::OnCollision(float deltatime)
 {
-
+	// Kiểm tra va chạm với đạn của Megaman
+	std::vector<NormalBullet*> *listBullet = &NormalBullet::listNormalBullet;
+	if (!listBullet->empty())
+	{
+		for (std::vector<NormalBullet*>::iterator it = listBullet->begin(); it != listBullet->end(); it++)
+		{
+			if ((*it)->bDisable)
+				continue;
+			if (!this->box.isEnable())
+				continue;
+			if (!Collision::IsIntersection(this->box.GetBox(), (*it)->box.GetBox()))
+				continue;
+			this->GetHPComponent()->DoDamage((*it)->damage, (*it)->bGodMode);
+			(*it)->Disable();
+			return;
+		}
+	}
 }
 
 void BlastHornet::Draw()

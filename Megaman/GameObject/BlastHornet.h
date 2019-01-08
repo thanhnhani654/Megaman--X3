@@ -33,9 +33,6 @@ private:
 	eDirection direction;
 	eBlastHornetState state;
 	Sprite subSprite;
-	Megaman* megaman;
-
-
 	
 	//Specific Attribute
 	float detectTargetTime;
@@ -83,6 +80,7 @@ public:
 
 	bool IsDisable();
 	void Disable();
+	void Disable(int i);
 	void Enable();
 
 	void Initialize();

@@ -176,6 +176,7 @@
     <ClCompile Include="GameObject\Item.cpp" />
     <ClCompile Include="GameObject\Layer2.cpp" />
     <ClCompile Include="GameObject\Map.cpp" />
+    <ClCompile Include="GameObject\Map2.cpp" />
     <ClCompile Include="GameObject\MapCollision.cpp" />
     <ClCompile Include="GameObject\Megaman.cpp" />
     <ClCompile Include="GameObject\NormalBullet.cpp" />
@@ -213,6 +214,7 @@
     <ClInclude Include="GameObject\Item.h" />
     <ClInclude Include="GameObject\Layer2.h" />
     <ClInclude Include="GameObject\Map.h" />
+    <ClInclude Include="GameObject\Map2.h" />
     <ClInclude Include="GameObject\MapCollision.h" />
     <ClInclude Include="GameObject\Megaman.h" />
     <ClInclude Include="GameObject\NormalBullet.h" />

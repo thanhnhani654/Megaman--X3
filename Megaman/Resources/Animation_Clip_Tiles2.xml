@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<data-set xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<SPRITE>
+		<Name>map2</Name>
+		<Count>1</Count>
+		<Clip0>s0_0</Clip0>
+	</SPRITE>
+</data-set>

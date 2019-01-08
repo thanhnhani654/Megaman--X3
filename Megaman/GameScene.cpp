@@ -10,6 +10,7 @@ void GameScene::Initialize()
 	//tree->TestObjectCreate();
 
 	map.Initialize();
+	map2.Initialize();
 	// MapCollision::LoadMapCollision();
 	/*cout << "Call From GameScene.cpp Line 8" << endl;
 	MapCollision::PrintList();*/
@@ -27,7 +28,7 @@ void GameScene::Initialize()
 	//Spawner<NotorBanger>(D3DXVECTOR2(400,3220));				// Spawn con NotorBanger
 	//Spawner<HeadHunter>(D3DXVECTOR2(891, 3220), false);
 	//Spawner<Helit>(D3DXVECTOR2(400, 3220), true);
-	//Spawner<BlastHornet>(D3DXVECTOR2(2491, 3000), true);
+	Spawner<BlastHornet>(D3DXVECTOR2(2491, 3000), true);
 	
 
 	/*Spawner<NotorBanger>(D3DXVECTOR2(400, 3220));
@@ -100,6 +101,7 @@ void GameScene::Draw()
 {
 	Camera::getInstance();
 	map.Draw();
+	
 
 	megaman->Draw();
 	NotorBanger::DrawAll();
@@ -115,5 +117,6 @@ void GameScene::Draw()
 	//HUD::getInstance()->Draw();
 
 	ele.Draw();
+	map2.Draw();
 	//gate1.Draw();
 }

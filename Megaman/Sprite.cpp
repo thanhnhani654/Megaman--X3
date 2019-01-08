@@ -7,6 +7,7 @@ LPDIRECT3DTEXTURE9 Sprite::_Image2;
 LPDIRECT3DTEXTURE9 Sprite::_Image3;
 LPDIRECT3DTEXTURE9 Sprite::_Image4;
 LPDIRECT3DTEXTURE9 Sprite::_Image5;
+LPDIRECT3DTEXTURE9 Sprite::_Image6;
 LPD3DXSPRITE Sprite::_SpriteHandler;
 
 vector <SpritePos> Sprite::spritepos;
@@ -91,6 +92,7 @@ void Sprite::Initialize()
 	_Image3 = LoadSprite2(TEXT("Resources/Enemies.png"), 333, 363);
 	_Image4 = LoadSprite2(TEXT("Resources/Other.png"), 594, 304);
 	_Image5 = LoadSprite2(TEXT("Resources/BlastHornet.png"), 538, 308);
+	_Image6 = LoadSprite(TEXT("Resources/map2.png"), 7933, 4078);
 	//_Image5 = ...
 
 	//Load Sprite
@@ -107,6 +109,7 @@ void Sprite::Initialize()
 	LoadAnimClips("Resources/Animation_Clip_Enemy.xml", _Image3);
 	LoadAnimClips("Resources/Animation_Clip_Other.xml", _Image4);
 	LoadAnimClips("Resources/Animation_Clip_BlastHornet.xml", _Image5);
+	LoadAnimClips("Resources/Animation_Clip_Tiles2.xml", _Image6);
 	//LoadAnimClips("Resources/...", _Image5);
 	
 }
@@ -166,7 +169,7 @@ void Sprite::Render(float X, float Y)
 	//offset
 	D3DXVECTOR3 center;
 	if (!customCenter)
-		if (currentAnim.name != "map")
+		if (currentAnim.name != "map" && currentAnim.name != "map2")
 			center = D3DXVECTOR3(currentSprite->w / 2, currentSprite->h / 2, 0);
 		else
 			center = D3DXVECTOR3(0, currentSprite->h, 0);

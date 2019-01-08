@@ -6,6 +6,7 @@
 #include <vector>
 #include "Sprite.h"
 #include "GameObject\Map.h"
+#include "GameObject\Map2.h"
 #include "GameObject\MapCollision.h"
 #include "GameObject\NotorBanger.h"
 #include "GameObject\Elevator.h"
@@ -33,6 +34,7 @@ private:
 
 	Megaman* megaman;
 	Map map;
+	Map2 map2;
 	MapCollision mapcollision1;
 	MapCollision mapcollision2;
 	MapCollision mapcollision3;

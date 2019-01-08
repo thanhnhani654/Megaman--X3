@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "Creature.h"
 #include "Megaman.h"
-#include "NormalBullet.h"
+//#include "NormalBullet.h"
 #include "NotorBullet.h"
 #include "Rocket.h"
 
@@ -25,7 +25,7 @@ private:
 
 	bool bDisable;
 
-	Megaman* megaman;
+	//Megaman* megaman;
 
 	D3DXVECTOR2 offset;
 	D3DXVECTOR2 updatePos;
