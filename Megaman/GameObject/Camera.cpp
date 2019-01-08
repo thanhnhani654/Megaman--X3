@@ -75,7 +75,7 @@ void Camera::UpdateCameraStage(float deltatime, D3DXVECTOR2 fpos)
 		break;
 	case hai:
 		if (position.y >= limitBottomY && fpos.y - CameraHeight / 2 >= limitBottomY)
-			position.y = fpos.y - CameraHeight / 2;
+			position.y = fpos.y - CameraHeight /2;
 		else
 			position.y = limitBottomY;
 		if (position.y > limitTopY)
