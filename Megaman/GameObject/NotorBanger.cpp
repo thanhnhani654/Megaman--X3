@@ -60,6 +60,14 @@ void NotorBanger::Disable()
 {
 	box.Disable();
 	bDisable = true;
+	bCanReInit = true;
+}
+
+void NotorBanger::Disable(int o)
+{
+	box.Disable();
+	bDisable = true;
+	bCanReInit = false;
 }
 
 void NotorBanger::Enable()
@@ -224,7 +232,7 @@ void NotorBanger::UpdateState(float deltatime)
 		if (timeToDeadCount < 0)
 		{
 			Item::CreateItem(this->GetPosition(), 0);
-			Disable();
+			Disable(1);
 		}
 		break;
 	default:
@@ -377,7 +385,7 @@ NotorBanger* NotorBanger::CreateNotorBanger(D3DXVECTOR2 pos, int direct)
 {
 	for (int i = 0; i < listNotorBanger.size(); i++)
 	{
-		if (listNotorBanger[i]->IsDisable())
+		if (listNotorBanger[i]->IsDisable() && listNotorBanger[i]->bCanReInit)
 		{
 			listNotorBanger[i]->ReInitialize(pos, direct);
 			return listNotorBanger[i];

@@ -53,8 +53,8 @@ void Quadtree::ObjectLoader(Entity * entity)
 	{
 	case 1:
 	case 0:
-		if (PRINT_DEBUG)
-			cout << "Create MapCollision" << endl;
+		//if (PRINT_DEBUG)
+			//cout << "Create MapCollision" << endl;
 		MapCollisionLoader(entity);
 		break;
 	case 2:
@@ -328,8 +328,11 @@ void Quadtree::DynamicLoad(float deltatime)
 
 				if (m_objects_list->at(i)->id != 1) 
 				{
+					
 					if (IsContain(rect, objectRect))
 					{
+						if (m_objects_list->at(i)->id == 4)
+							int a = 0;
 						ObjectLoader(m_objects_list->at(i));
 					}
 				}
@@ -380,8 +383,8 @@ void Quadtree::DynamicunLoad(float deltatime)
 		rect.y -= 100;
 		if (!IsContain(*listMapCollisionLinker[i]->entity->node->m_region, rect))
 		{
-			if (PRINT_DEBUG)
-				cout << "Delete MapCollision" << endl;
+			//if (PRINT_DEBUG)
+				//cout << "Delete MapCollision" << endl;
 			listMapCollisionLinker[i]->Disable();
 		}
 		rect.x += 100;
@@ -395,12 +398,6 @@ void Quadtree::DynamicunLoad(float deltatime)
 		if (listNotorBangerLinker[i]->bDisable)
 			continue;
 
-		if (listNotorBangerLinker[i]->object->bDisable)
-		{
-			listNotorBangerLinker[i]->bDisable = true;
-			continue;
-		}
-
 		Rect objectRect;
 		objectRect.x = listNotorBangerLinker[i]->object->GetPosition().x;
 		objectRect.y = listNotorBangerLinker[i]->object->GetPosition().y;
@@ -410,8 +407,8 @@ void Quadtree::DynamicunLoad(float deltatime)
 		if (!IsContain(*listNotorBangerLinker[i]->entity->node->m_region, rect))
 		{
 			listNotorBangerLinker[i]->Disable();
-			if (PRINT_DEBUG)
-				cout << "Delete NotorBanger" << endl;
+			//if (PRINT_DEBUG)
+				//cout << "Delete NotorBanger" << endl;
 		}
 	}
 
@@ -420,11 +417,11 @@ void Quadtree::DynamicunLoad(float deltatime)
 		if (listHeadHunterLinker[i]->bDisable)
 			continue;
 
-		if (listHeadHunterLinker[i]->object->IsDisable())
-		{
-			listHeadHunterLinker[i]->bDisable = true;
-			continue;
-		}
+		//if (listHeadHunterLinker[i]->object->IsDisable())
+		//{
+		//	listHeadHunterLinker[i]->Disable();
+		//	continue;
+		//}
 		Rect objectRect;
 		objectRect.x = listHeadHunterLinker[i]->object->GetPosition().x;
 		objectRect.y = listHeadHunterLinker[i]->object->GetPosition().y;
@@ -444,11 +441,11 @@ void Quadtree::DynamicunLoad(float deltatime)
 		if (listHelitLinker[i]->bDisable)
 			continue;
 
-		if (listHelitLinker[i]->object->IsDisable())
-		{
-			listHelitLinker[i]->bDisable = true;
-			continue;
-		}
+		//if (listHelitLinker[i]->object->IsDisable())
+		//{
+		//	listHelitLinker[i]->Disable(1);
+			
+		//}
 
 		Rect objectRect;
 		objectRect.x = listHelitLinker[i]->object->GetPosition().x;
@@ -502,6 +499,7 @@ void Quadtree::NotorBangerLoader(Entity * entity)
 			listNotorBangerLinker[i]->bDisable = false;
 			listNotorBangerLinker[i]->object = object;
 			listNotorBangerLinker[i]->entity = entity;
+			return;
 		}
 	}
 
@@ -525,6 +523,7 @@ void Quadtree::HeadHunterLoader(Entity * entity)
 			listHeadHunterLinker[i]->bDisable = false;
 			listHeadHunterLinker[i]->object = object;
 			listHeadHunterLinker[i]->entity = entity;
+			return;
 		}
 	}
 
@@ -548,6 +547,7 @@ void Quadtree::HelitLoader(Entity * entity)
 			listHelitLinker[i]->bDisable = false;
 			listHelitLinker[i]->object = object;
 			listHelitLinker[i]->entity = entity;
+			return;
 		}
 	}
 

@@ -39,12 +39,14 @@ private:
 
 	bool bMad;
 	bool bDisable;
+	
 
 public:
 	static std::vector<Helit*> listHelit;
 	Helit() {};
 	Helit(D3DXVECTOR2 pos, int  direction = 0);
 	~Helit() {};
+
 
 	void GoDownFindPlayer(float deltatime);
 	void RunAway();
@@ -54,6 +56,7 @@ public:
 	void FireRocket();
 	bool IsDisable();
 	void Disable();
+	void Disable(int o);
 	void Enable();
 
 	void Initialize();

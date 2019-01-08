@@ -15,7 +15,7 @@ using namespace std;
 #define MAX_LEVEL 10
 
 #define _CRT_SECURE_NO_WARNINGS
-#define PRINT_DEBUG FALSE
+#define PRINT_DEBUG TRUE
 #define DONT_LOAD_NOTORBANGER FALSE
 #define DONT_LOAD_HEADGUNNER FALSE
 class Quadtree;
@@ -98,13 +98,14 @@ struct HeadHunterLinker
 	Entity* entity;
 	bool bDisable;
 
-	HeadHunterLinker() { bDisable = false; }
+	HeadHunterLinker() { bDisable = false;}
 
-	void Disable()
+	void Disable(int mode = 0)
 	{
-		bDisable = true;
 		object->Disable();
 		entity->bCreated = false;
+		if (mode == 0)
+			bDisable = true;
 	}
 };
 struct HelitLinker
@@ -120,6 +121,13 @@ struct HelitLinker
 		bDisable = true;
 		object->Disable();
 		entity->bCreated = false;
+	}
+
+	void Disable(int o)
+	{
+		//bDisable = true;
+		object->Disable(1);
+		//entity->bCreated = false;
 	}
 };
 

@@ -5,8 +5,8 @@
 #include "NotorBullet.h"
 #include "Item.h"
 
-#define PRINT_SIZE TRUE
-#define PRINT_SIZE_ENABLE_OBJECT TRUE
+#define PRINT_SIZE FALSE
+#define PRINT_SIZE_ENABLE_OBJECT FALSE
 
 
 //Ghép 2 trạng thái Fire với Posture lại
@@ -58,6 +58,7 @@ public:
 	void ResetFireTime();
 	bool IsDisable();
 	void Disable();
+	void Disable(int o);
 	void Enable();
 
 	void Initialize();

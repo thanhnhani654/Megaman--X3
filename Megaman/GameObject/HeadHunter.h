@@ -52,6 +52,7 @@ public:
 	void ResetRocketTime();
 	bool IsDisable();
 	void Disable();
+	void Disable(int o);
 	void Enable();
 
 	void Initialize();

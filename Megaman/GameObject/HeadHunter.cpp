@@ -146,6 +146,14 @@ void HeadHunter::Disable()
 {
 	bDisable = true;
 	this->box.Disable();
+	bCanReInit = true;
+}
+
+void HeadHunter::Disable(int o)
+{
+	bDisable = true;
+	this->box.Disable();
+	bCanReInit = false;
 }
 
 void HeadHunter::Enable()
@@ -161,6 +169,8 @@ void HeadHunter::Initialize()
 	box.SetPivot(20, 16);
 	sprite.get()->SetAnimation("headgunner");
 	InitialzieHPComponent(3, 1);
+
+	state = eHeadHunterState::FireBullet;
 
 	changeStateTime = 3.f;
 	changeStateTimeCount = changeStateTime;
@@ -186,7 +196,8 @@ void HeadHunter::ReInitialize(D3DXVECTOR2 pos, int direction)
 	timeToDeadCount = timeToDead;
 
 	this->SetPosition(pos);
-
+	state = eHeadHunterState::FireBullet;
+	sprite.get()->SetAnimation("headgunner");
 	if (!direction)
 	{
 		sprite.get()->FlipLeft();
@@ -252,7 +263,7 @@ void HeadHunter::UpdateState(float deltatime)
 	case onHHDead:
 		timeToDeadCount -= deltatime;
 		if (timeToDeadCount < 0)
-			Disable();
+			Disable(1);
 		break;
 	}
 }
@@ -336,7 +347,7 @@ HeadHunter * HeadHunter::CreateHeadHunter(D3DXVECTOR2 pos, int direction)
 {
 	for (int i = 0; i < listHeadHunter.size(); i++)
 	{
-		if (listHeadHunter[i]->IsDisable())
+		if (listHeadHunter[i]->IsDisable() && listHeadHunter[i]->bCanReInit)
 		{
 			listHeadHunter[i]->ReInitialize(pos, direction);
 			return listHeadHunter[i];

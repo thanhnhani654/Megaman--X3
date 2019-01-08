@@ -15,6 +15,8 @@ public:
 	Box2D box;
 	#pragma region Inherit
 
+	bool bCanReInit;
+
 	virtual void Initialize();
 	virtual void Ghost_Initialize();				//Initialize mà không lưu lại trong listObject
 	virtual void UpdateInput(float deltatime);

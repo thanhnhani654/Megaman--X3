@@ -113,6 +113,14 @@ void Helit::Disable()
 {
 	bDisable = true;
 	this->box.Disable();
+	bCanReInit = true;
+}
+
+void Helit::Disable(int o)
+{
+	bDisable = true;
+	this->box.Disable();
+	bCanReInit = false;
 }
 
 void Helit::Enable()
@@ -152,14 +160,17 @@ void Helit::Initialize()
 
 void Helit::ReInitialize(D3DXVECTOR2 pos, int direction)
 {
+	this->SetPosition(pos);
 	InitialzieHPComponent(3, 1);
 	sprite.get()->SetAnimation("helit");
 	state = eHelitState::GoDown;
 	fireTimeIntervalCount = fireTimeInterval;
+	fireCount = 0;
 	madTime1Count = madTime1;
 	madTime2Count = madTime2;
 	timeToDeadCount = timeToDead;
 	bMad = false;
+	Enable();
 }
 
 void Helit::UpdateInput(float deltatime)
@@ -193,6 +204,9 @@ void Helit::Update(float deltatime)
 
 void Helit::UpdateState(float deltatime)
 {
+	int a;
+	int  b = 0;
+
 	switch (state)
 	{
 	case GoDown:
@@ -211,6 +225,7 @@ void Helit::UpdateState(float deltatime)
 		}
 		break;
 	case GoUp:
+		 a = 0;
 		break;
 	case Mad:
 		if (this->GetPosition().y <= Megaman::getInstance()->GetPosition().y && !bMad)
@@ -251,7 +266,7 @@ void Helit::UpdateState(float deltatime)
 	case onHDead:
 		timeToDeadCount -= deltatime;
 		if (timeToDeadCount < 0)
-			Disable();
+			Disable(1);
 		break;
 	default:
 		break;
@@ -356,7 +371,7 @@ Helit * Helit::CreateHelit(D3DXVECTOR2 pos, int direction)
 {
 	for (int i = 0; i < listHelit.size(); i++)
 	{
-		if (listHelit[i]->IsDisable())
+		if (listHelit[i]->IsDisable() * listHelit[i]->bCanReInit)
 		{
 			listHelit[i]->ReInitialize(pos, direction);
 			return listHelit[i];

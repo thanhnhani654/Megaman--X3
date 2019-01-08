@@ -4,7 +4,7 @@
 #include <time.h>
 #include "Controllable.h"
 
-#define BSHOWFPS TRUE
+#define BSHOWFPS FALSE
 
 using namespace std;
 
