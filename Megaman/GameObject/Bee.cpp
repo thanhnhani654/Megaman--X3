@@ -58,6 +58,8 @@ void Bee::Initialize()
 	sprite.get()->SetAnimation("bee");
 	state = eBeeState::FightADie;
 
+	InitialzieHPComponent(12, 2);
+
 	timeToDie = 2;
 	timeToDieCount = timeToDie;
 	dieTime = 0.5f;
@@ -131,6 +133,19 @@ void Bee::UpdateState(float deltatime)
 
 void Bee::OnCollision(float deltatime)
 {
+	if (state == eBeeState::Dying)
+	{
+		if (!Collision::IsIntersection(Collision::GetBroadphaseBox(this->box, deltatime), Collision::GetBroadphaseBox(Megaman::getInstance()->box, deltatime)))
+			return;
+
+		if (Megaman::getInstance()->state == eMegamanState::Hurt)
+			return;
+
+		Megaman::getInstance()->state = eMegamanState::Hurt;
+		Megaman::getInstance()->GetHPComponent()->DoDamage(this->GetHPComponent()->GetDamage());
+		return;
+	}
+
 	// Kiểm tra va chạm với đạn của Megaman
 	std::vector<NormalBullet*> *listBullet = &NormalBullet::listNormalBullet;
 	if (!listBullet->empty())

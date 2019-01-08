@@ -81,7 +81,7 @@ void GameScene::Update(float deltatime)
 	tree->DynamicunLoad(deltatime);
 
 	HUD::getInstance()->Update(deltatime);
-	cout << megaman->GetPosition().x << "\t" << megaman->GetPosition().y << "\t\tCall From GameScene.cpp Line: 50" << endl; // 3091 3118
+	//cout << megaman->GetPosition().x << "\t" << megaman->GetPosition().y << "\t\tCall From GameScene.cpp Line: 50" << endl; // 3091 3118
 }
 
 void GameScene::Draw()

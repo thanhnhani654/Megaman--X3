@@ -50,7 +50,7 @@ void BlastHornet::Initialize()
 	sprite.get()->SetAnimation("blasthornet");
 	subSprite.SetAnimation("blasthornet_wing");
 	state = eBlastHornetState::DetectTarget;
-	InitialzieHPComponent(25, 1);
+	InitialzieHPComponent(25, 5);
 	bStartBossFight = false;
 
 	changeStateTime = 3.f;
@@ -79,7 +79,7 @@ void BlastHornet::ReInitialize(D3DXVECTOR2 pos, int direction)
 
 	changeStateTimeCount = changeStateTime;
 
-	InitialzieHPComponent(30, 1);
+	InitialzieHPComponent(30, 5);
 
 	this->SetPosition(pos);
 

@@ -12,8 +12,11 @@
 #include "Helit.h"
 #include "NotorBullet.h"
 #include "Rocket.h"
+#include "BlastHornet.h"
+#include "HelitRocket.h"
+#include "Bee.h"
 
-#define DEBUG_IMMORTAL TRUE			//TRUE: không va chạm với Enemy hay bullet | FALSE: Va chạm với Enemy và bullet
+#define DEBUG_IMMORTAL FALSE			//TRUE: không va chạm với Enemy hay bullet | FALSE: Va chạm với Enemy và bullet
 
 enum class eMegamanState			
 {
@@ -26,6 +29,7 @@ enum class eMegamanState
 	Dash,
 	ClingWall,
 	Hurt,
+	Dying
 };
 
 class Megaman : public Creature, Controllable
@@ -34,7 +38,7 @@ private:
 	
 	static Megaman* instance;
 	eMegamanState prevState;
-	eMegamanState state;
+	
 	eDirection direction;
 	float chargeLv2;
 	float chargeLv3;
@@ -90,6 +94,7 @@ private:
 	
 
 public:
+	eMegamanState state;
 	bool bHornetFiglt;
 	bool bEndBossFight;
 

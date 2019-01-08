@@ -7,13 +7,13 @@ void Megaman::Initialize()
 	sprite.get()->SetAnimation("char_stand");	
 	GetMoveComponent()->EnableGravity();
 	GetMoveComponent()->SetSpeed(150);
-	GetMoveComponent()->SetJumpPower(100);
+	GetMoveComponent()->SetJumpPower(85);
 	InitialzieHPComponent(19, 1);
 	GetHPComponent()->SetMaxHP(19);
 
 	//Thuộc tính riêng biệt
-	limitDashTime = 0.4f;
-	dashTime = 0.4f;
+	limitDashTime = 0.2f;
+	dashTime = 0.2f;
 	chargeBar = 0;
 	chargeLv2 = 1;
 	chargeLv3 = 2;
@@ -38,7 +38,7 @@ void Megaman::Initialize()
 	box.SetPivot(8,16);
 
 	GetTagMethod()->AddTag(eTag::PlayerTag);
-	GetHPComponent()->ToggleGodMode();
+	//GetHPComponent()->ToggleGodMode();
 }
 
 void Megaman::Ghost_Initialize(){}
@@ -333,9 +333,9 @@ void Megaman::FireBullet()
 			if (chargeBar < 1)
 				(*it)->Re_Initialize(GetPosition().x, GetPosition().y, direction,1, GetHPComponent()->GetDamage(), GetHPComponent()->IsGodMode());
 			else if (chargeBar < 2 && chargeBar >= 1)
-				(*it)->Re_Initialize(GetPosition().x, GetPosition().y, direction, 2, GetHPComponent()->GetDamage(), GetHPComponent()->IsGodMode());
+				(*it)->Re_Initialize(GetPosition().x, GetPosition().y, direction, 2, GetHPComponent()->GetDamage()+2, GetHPComponent()->IsGodMode());
 			else
-				(*it)->Re_Initialize(GetPosition().x, GetPosition().y, direction, 3, GetHPComponent()->GetDamage(), GetHPComponent()->IsGodMode());
+				(*it)->Re_Initialize(GetPosition().x, GetPosition().y, direction, 3, GetHPComponent()->GetDamage()+3, GetHPComponent()->IsGodMode());
 			chargeBar = 0;
 			bShoot = true;
 			return;
@@ -345,9 +345,9 @@ void Megaman::FireBullet()
 	if (chargeBar < 1)
 		bullet1->Ghost_Initialize(GetPosition().x, GetPosition().y, direction, 1, GetHPComponent()->GetDamage(), GetHPComponent()->IsGodMode());
 	else if (chargeBar < 2 && chargeBar >= 1)
-		bullet1->Ghost_Initialize(GetPosition().x, GetPosition().y, direction, 2, GetHPComponent()->GetDamage(), GetHPComponent()->IsGodMode());
+		bullet1->Ghost_Initialize(GetPosition().x, GetPosition().y, direction, 2, GetHPComponent()->GetDamage()+2, GetHPComponent()->IsGodMode());
 	else
-		bullet1->Ghost_Initialize(GetPosition().x, GetPosition().y, direction, 3, GetHPComponent()->GetDamage(), GetHPComponent()->IsGodMode());
+		bullet1->Ghost_Initialize(GetPosition().x, GetPosition().y, direction, 3, GetHPComponent()->GetDamage()+3, GetHPComponent()->IsGodMode());
 	chargeBar = 0;
 	bShoot = true;
 
@@ -472,6 +472,18 @@ void Megaman::UpdateInput(float deltatime)
 
 void Megaman::Update(float deltatime)
 {
+	if (GetHPComponent()->GetHP() < 0)
+	{
+		SetPosition(300, 3320);
+		bHornetFiglt = false;
+		bEndBossFight = true;
+		GetHPComponent()->SetHP(GetHPComponent()->GetMaxHP());
+		Camera::getInstance()->stage = eCamerastage::khong;
+	}
+
+	if (GetPosition().y < 1800)
+		GetHPComponent()->SetHP(-1);
+
 	PassGate(deltatime);
 	//Bắt buộc để MoveComponent hoạt động
 	GetMoveComponent()->UpdateMovement(deltatime);
@@ -727,6 +739,26 @@ void Megaman::OnCollision(float deltatime)
 			this->GetHPComponent()->DoDamage((*it)->GetHPComponent()->GetDamage());
 		}
 	}
+	///////////////Check With BlastHornet////////////////////////////
+	std::vector<BlastHornet*> *listBlastHornet = &BlastHornet::listBlastHornet;
+	if (!listHeadHunter->empty() && !DEBUG_IMMORTAL)
+	{
+		for (std::vector<BlastHornet*>::iterator it = listBlastHornet->begin(); it != listBlastHornet->end(); it++)
+		{
+			if ((*it)->IsDisable() || state == eMegamanState::Hurt || bImmortal)
+				continue;
+
+			if (!Collision::IsIntersection(Collision::GetBroadphaseBox(this->box, deltatime), Collision::GetBroadphaseBox((*it)->box, deltatime)))
+				continue;
+			state = eMegamanState::Hurt;
+
+			if (this->box.GetPosition().x - (*it)->box.GetPosition().x > 0)
+				EnemyCollision(1);		//Right
+			else
+				EnemyCollision(-1);		//Left
+			this->GetHPComponent()->DoDamage((*it)->GetHPComponent()->GetDamage());
+		}
+	}
 	///////////////Check With Rocket////////////////////////////
 	std::vector<Rocket*> *listRocket = &Rocket::listRocket;
 	if (!listRocket->empty() && !DEBUG_IMMORTAL)
@@ -745,6 +777,28 @@ void Megaman::OnCollision(float deltatime)
 			else
 				EnemyCollision(-1);		//Left
 			this->GetHPComponent()->DoDamage((*it)->GetHPComponent()->GetDamage());
+			(*it)->Disable();
+		}
+	}
+	///////////////Check With Helit Rocket////////////////////////////
+	std::vector<HelitRocket*> *listHelitRocket = &HelitRocket::listHelitRocket;
+	if (!listHelitRocket->empty() && !DEBUG_IMMORTAL)
+	{
+		for (std::vector<HelitRocket*>::iterator it = listHelitRocket->begin(); it != listHelitRocket->end(); it++)
+		{
+			if ((*it)->bDisable || state == eMegamanState::Hurt || bImmortal)
+				continue;
+
+			if (!Collision::IsIntersection(Collision::GetBroadphaseBox(this->box, deltatime), Collision::GetBroadphaseBox((*it)->box, deltatime)))
+				continue;
+			state = eMegamanState::Hurt;
+
+			if (this->box.GetPosition().x - (*it)->box.GetPosition().x > 0)
+				EnemyCollision(1);		//Right
+			else
+				EnemyCollision(-1);		//Left
+			this->GetHPComponent()->DoDamage((*it)->GetHPComponent()->GetDamage());
+			(*it)->Disable();
 		}
 	}
 
@@ -913,7 +967,8 @@ void Megaman::OnKeyDown(int Keycode)
 	switch (Keycode)
 	{
 	case DIK_K:
-		Jump();
+		if (state != eMegamanState::Hurt)
+			Jump();
 		break;
 	default:
 		break;
