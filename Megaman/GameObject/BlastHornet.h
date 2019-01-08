@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include "Creature.h"
 #include "Megaman.h"
 #include "NormalBullet.h"
+#include "HUD.h"
 #include "Bee.h"
 #include <math.h>
 #include <random>

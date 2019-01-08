@@ -94,6 +94,8 @@ void GameScene::Update(float deltatime)
 	Camera::getInstance()->Update(deltatime,megaman->GetPosition());	
 	tree->DynamicLoad(deltatime);
 	tree->DynamicunLoad(deltatime);
+
+	HUD::getInstance()->Update(deltatime);
 	//cout << megaman->GetPosition().x << "\t" << megaman->GetPosition().y << "\t\tCall From GameScene.cpp Line: 50" << endl; // 3091 3118
 }
 
@@ -114,7 +116,7 @@ void GameScene::Draw()
 	Bee::DrawAll();
 	Item::DrawAll();
 	Layer2::DrawAll();
-	//HUD::getInstance()->Draw();
+	HUD::getInstance()->Draw();
 
 	ele.Draw();
 	map2.Draw();

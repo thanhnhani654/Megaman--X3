@@ -8,8 +8,8 @@ void Megaman::Initialize()
 	GetMoveComponent()->EnableGravity();
 	GetMoveComponent()->SetSpeed(150);
 	GetMoveComponent()->SetJumpPower(100);
-	InitialzieHPComponent(10, 1);
-	GetHPComponent()->SetMaxHP(15);
+	InitialzieHPComponent(19, 1);
+	GetHPComponent()->SetMaxHP(19);
 
 	//Thuộc tính riêng biệt
 	limitDashTime = 0.4f;
