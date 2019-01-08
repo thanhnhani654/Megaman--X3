@@ -14,14 +14,6 @@ void Camera::ToggleFollowCamera()
 	bFollowCamera = !bFollowCamera;
 }
 
-bool Camera::IsFollowCamera()
-{
-	if (!bFollowCamera && bFreeMode)
-		return true;
-	return false;
-}
-
-
 void Camera::UpdateInput(float deltatime)
 {
 	//_ProcessKeyBoard();
@@ -53,7 +45,7 @@ void Camera::Update(float deltatime, D3DXVECTOR2 fpos)
 			position.y -= speed;
 		if (IsKeyDown(DIK_UP))
 			position.y += speed;
-		std::cout << "X: " << position.x << " Y: " << position.y << std::endl;
+		//std::cout << "X: " << position.x << " Y: " << position.y << std::endl;
 	}
 }
 
@@ -89,25 +81,8 @@ void Camera::UpdateCameraStage(float deltatime, D3DXVECTOR2 fpos)
 		
 		if (position.y > limitTopY)
 		{
-			stage = eCamerastage::haichamnam;
-			//limitLeftX = 970;
-			limitLeftX = 775;
-			//limitRightX = 2070;
-			limitRightX = 1300;
-			limitBottomY = 2745;
-			limitTopY = 3470;
-		}
-		break;
-	case haichamnam:
-		if (position.x >= limitLeftX)
-			position.x = fpos.x - CameraWidth / 2;
-		else
-			position.x = limitLeftX;
-
-		if (position.x > limitRightX)
-		{
 			stage = eCamerastage::ba;
-			limitLeftX = 1300;
+			limitLeftX = 970;
 			limitRightX = 2070;
 			limitBottomY = 2745;
 			limitTopY = 3470;
@@ -129,35 +104,27 @@ void Camera::UpdateCameraStage(float deltatime, D3DXVECTOR2 fpos)
 		if (position.x > limitRightX)
 		{
 			stage = eCamerastage::bon;
-			limitLeftX = 2000;
-			limitRightX = 2200;
+			limitLeftX = 2312;
+			limitRightX = 2312;
 		}
 		break;
 	case bon:
-		//position.x = 2312;
+		position.x = 2312;
 		
 		if (position.x >= limitLeftX)
 		{
 			position.x = fpos.x - CameraWidth / 2;
 		}
-		else
-			position.x = limitLeftX;
 		
 		if (position.x > limitRightX)
 		{
 			stage = eCamerastage::nam;
-			limitLeftX = 2516;
+			limitLeftX = 2562;
 			limitRightX = 5400;
-			stage = eCamerastage::HornetFight;
 		}
 		break;
-	case HornetFight:
-		position.x = 2310;
-		limitLeftX = 2310;
-		limitRightX = 5400;
-		break;
 	case nam:
-		position.x = 2310;
+		position.x = 2562;
 		if (position.x >= limitLeftX && position.y >= limitBottomY && fpos.y - CameraHeight / 2 >= limitBottomY)
 		{
 			position.x = fpos.x - CameraWidth / 2;
@@ -173,7 +140,6 @@ void Camera::UpdateCameraStage(float deltatime, D3DXVECTOR2 fpos)
 			limitRightX = 5650;
 		}
 			break;
-	
 	case sau:
 		position.x = 5650;
 

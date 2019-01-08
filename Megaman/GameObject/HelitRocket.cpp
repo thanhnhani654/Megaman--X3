@@ -11,6 +11,8 @@ void HelitRocket::Ghost_Initialize(float x, float y, eDirection idirection)
 	box.DynamicInitialize(this, 8, 6);
 	sprite.get()->SetAnimation("helit_rocket");
 
+	InitialzieHPComponent(1, 1);
+
 	GetMoveComponent()->DisableGravity();
 	GetMoveComponent()->SetSpeed(150);
 

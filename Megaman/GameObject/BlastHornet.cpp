@@ -51,6 +51,7 @@ void BlastHornet::Initialize()
 	subSprite.SetAnimation("blasthornet_wing");
 	state = eBlastHornetState::DetectTarget;
 	InitialzieHPComponent(25, 1);
+	bStartBossFight = false;
 
 	changeStateTime = 3.f;
 	changeStateTimeCount = changeStateTime;
@@ -263,6 +264,10 @@ void BlastHornet::UpdateInput(float deltatime)
 
 void BlastHornet::Update(float deltatime)
 {
+	if (!Megaman::getInstance()->bHornetFiglt)
+		return;
+	Megaman::getInstance()->bEndBossFight = false;
+
 	if (GetHPComponent()->IsDead() && state != eBlastHornetState::onBHDead)
 	{
 		state = eBlastHornetState::onBHDead;
@@ -371,6 +376,7 @@ void BlastHornet::UpdateState(float deltatime)
 		if (timeToDeadCount < 0)
 		{
 			//Item::CreateItem(this->GetPosition(), 0);
+			Megaman::getInstance()->bEndBossFight = true;
 			Disable(1);
 		}
 		break;
@@ -402,6 +408,8 @@ void BlastHornet::OnCollision(float deltatime)
 
 void BlastHornet::Draw()
 {
+	if (!Megaman::getInstance()->bHornetFiglt)
+		return;
 	subSprite.Render(this->GetPosition().x, this->GetPosition().y+40);
 	Creature::Draw();
 }

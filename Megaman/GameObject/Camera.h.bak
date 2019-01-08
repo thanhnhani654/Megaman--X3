@@ -4,8 +4,8 @@
 #include <iostream>
 #include "../Controllable.h"
 
-#define CameraWidth 250
-#define CameraHeight 250
+#define CameraWidth 300
+#define CameraHeight 300
 #define PRINT_POSITION FALSE
 
 enum eCamerastage
@@ -13,15 +13,8 @@ enum eCamerastage
 	khong,
 	mot,
 	hai,
-	haichamnam,
 	ba,
-	bon,
-	nam,
-	sau,
-	bay,
-	tam,
-	chin,
-	HornetFight
+	bon
 };
 
 class Camera : public Controllable
@@ -32,26 +25,29 @@ private:
 	bool bFollowCamera;
 	bool bFreeMode;
 	bool bStageCamera;
-	float speed;
-	D3DXVECTOR2 size;
 	
+	D3DXVECTOR2 size;
+	eCamerastage stage;
+
 	bool lockX;
 	bool lockY;
 	float limitRightX;
 	float limitLeftX;
 	float limitTopY;
 	float limitBottomY;
+	float speed;
 
 public:
-	eCamerastage stage;
+	
 
+	float GetSpeed() { return speed; }
 
 	static Camera* getInstance();
 	Camera()
 	{
 		bFollowCamera = true;
 		bFreeMode = false;
-		bStageCamera = true;
+		bStageCamera = false;
 		stage = eCamerastage::khong;
 		position.x = 0;
 		position.y = 0;
@@ -64,8 +60,6 @@ public:
 		
 
 	}
-
-	float GetSpeed() { return speed; }
 
 	D3DXVECTOR2 GetPosition()
 	{
@@ -85,12 +79,12 @@ public:
 
 	void ToggleFollowCamera();
 
-	bool IsFollowCamera();
-
 	void Update(float deltatime, D3DXVECTOR2 fpos);
 	void UpdateCameraStage(float deltatime, D3DXVECTOR2 fpos);
 
 	void UpdateInput(float deltatime);
+
+	bool IsFollowCamera();
 
 	void OnKeyDown(int keycode);
 };

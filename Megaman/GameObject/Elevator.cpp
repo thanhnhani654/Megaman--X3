@@ -11,6 +11,8 @@ void Elevator::Initialize()
 	GetMoveComponent()->SetSpeed(150);
 	GetMoveComponent()->DisableGravity();
 	sprite.get()->SetAnimation("lift_1");
+	bWaiting = true;
+	bStop = false;
 }
 
 void Elevator::Initialize(float x, float y, int w, int h)
@@ -26,7 +28,18 @@ void Elevator::Initialize(float x, float y, int w, int h)
 	GetMoveComponent()->DisableGravity();
 	sprite.get()->SetAnimation("lift_1");
 
+	bWaiting = true;
+	bStop = false;
+	stopPoint = 3633;
+
 	listElevator.push_back(this);
+}
+
+void Elevator::Reset()
+{
+	this->SetPosition(this->GetPosition().x, 3130);
+	bWaiting = true;
+	bStop = false;
 }
 
 void Elevator::UpdateInput(float deltatime)
@@ -38,6 +51,13 @@ void Elevator::UpdateInput(float deltatime)
 
 void Elevator::Update(float deltatime)
 {
+	if (bWaiting)
+		return;
+	if (bStop)
+		return;
+	if (this->GetPosition().y >= stopPoint)
+		bStop = true;
+
 	this->GetMoveComponent()->UpdateMovement(deltatime);
 }
 

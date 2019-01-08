@@ -12,6 +12,8 @@ void NotorBullet::Ghost_Initialize(float x, float y, eDirection idirection)
 	box.SetPivot(4, 3);
 	sprite.get()->SetAnimation("notorbanger_bullet");
 
+	InitialzieHPComponent(1, 1);
+
 	GetMoveComponent()->EnableGravity();
 	GetMoveComponent()->SetSpeed(150);
 	GetMoveComponent()->SetJumpPower(100);

@@ -42,7 +42,7 @@ void HUD::CreateBossHpUnit()
 	{
 		HpUnits unit;
 		unit.unit.SetAnimation("hp_unit");
-		unit.pos.x = 260;
+		unit.pos.x = 200;
 		unit.pos.y = y;
 		BossHpUnits.push_back(unit);
 		y += 3;
@@ -79,7 +79,9 @@ void HUD::Draw()
 		CharHpUnits[i].unit.Render(CharHpUnits[i].pos.x + _camera->GetPosition().x, CharHpUnits[i].pos.y + _camera->GetPosition().y);
 	}
 
-	BossHPBar.Render(260 + _camera->GetPosition().x, 170 + _camera->GetPosition().y);
+	if (Megaman::getInstance()->bEndBossFight)
+		return;
+	BossHPBar.Render(200 + _camera->GetPosition().x, 170 + _camera->GetPosition().y);
 	for (int i = 0; i < BossHp; i++)
 	{
 		BossHpUnits[i].unit.Render(BossHpUnits[i].pos.x + _camera->GetPosition().x, BossHpUnits[i].pos.y + _camera->GetPosition().y);

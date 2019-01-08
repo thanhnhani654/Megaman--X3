@@ -6,22 +6,20 @@
 
 #define CameraWidth 250
 #define CameraHeight 250
-#define PRINT_POSITION FALSE
+#define PRINT_POSITION TRUE
 
 enum eCamerastage
 {
 	khong,
 	mot,
 	hai,
-	haichamnam,
 	ba,
 	bon,
 	nam,
 	sau,
 	bay,
 	tam,
-	chin,
-	HornetFight
+	chin
 };
 
 class Camera : public Controllable
@@ -34,7 +32,8 @@ private:
 	bool bStageCamera;
 	float speed;
 	D3DXVECTOR2 size;
-	
+	eCamerastage stage;
+
 	bool lockX;
 	bool lockY;
 	float limitRightX;
@@ -43,9 +42,6 @@ private:
 	float limitBottomY;
 
 public:
-	eCamerastage stage;
-
-
 	static Camera* getInstance();
 	Camera()
 	{
@@ -65,8 +61,6 @@ public:
 
 	}
 
-	float GetSpeed() { return speed; }
-
 	D3DXVECTOR2 GetPosition()
 	{
 		return position;
@@ -84,8 +78,6 @@ public:
 	}
 
 	void ToggleFollowCamera();
-
-	bool IsFollowCamera();
 
 	void Update(float deltatime, D3DXVECTOR2 fpos);
 	void UpdateCameraStage(float deltatime, D3DXVECTOR2 fpos);

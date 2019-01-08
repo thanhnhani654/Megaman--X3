@@ -78,6 +78,8 @@ public:
 	BlastHornet(D3DXVECTOR2 pos, int direction = 0);
 	~BlastHornet() {};
 
+	bool bStartBossFight;
+
 	bool IsDisable();
 	void Disable();
 	void Disable(int i);

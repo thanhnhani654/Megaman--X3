@@ -15,7 +15,7 @@ using namespace std;
 #define MAX_LEVEL 10
 
 #define _CRT_SECURE_NO_WARNINGS
-#define PRINT_DEBUG TRUE
+#define PRINT_DEBUG FALSE
 #define DONT_LOAD_NOTORBANGER FALSE
 #define DONT_LOAD_HEADGUNNER FALSE
 class Quadtree;

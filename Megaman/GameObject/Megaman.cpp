@@ -31,6 +31,8 @@ void Megaman::Initialize()
 	waitOpenGateTimeCount = waitOpenGateTime;
 	bPassingGate = false;
 	bDisableInput = false;
+	bHornetFiglt = false;
+	bEndBossFight = true;
 
 	box.DynamicInitialize(this, 16, 26);
 	box.SetPivot(8,16);
@@ -231,6 +233,7 @@ void Megaman::WallCollision(float collideTime, int normalX, int normalY, float d
 
 void Megaman::ElevatorCollision(float collideTime, int normalX, int normalY, float deltatime, Box box, float eSpeed)
 {
+
 	//Va chạm với Wall và Ground
 	if (collideTime >= 0 || collideTime < 0.1)
 	{
@@ -314,6 +317,8 @@ void Megaman::EnemyCollision(int direction)
 		vecX = -50;
 	vecY = 250;
 	GetMoveComponent()->SetVelocity(vecX, vecY);
+
+	
 }
 
 void Megaman::FireBullet()
@@ -474,6 +479,12 @@ void Megaman::Update(float deltatime)
 	UpdateBullet(deltatime);
 	ShootCountDown(deltatime);
 	HurtCountDown(deltatime);
+
+	if (GetPosition().x > 2310)
+		bHornetFiglt = true;
+
+	if (bEndBossFight && Camera::getInstance()->stage == eCamerastage::HornetFight)
+		Camera::getInstance()->stage = eCamerastage::nam;
 	
 }
 
@@ -653,7 +664,7 @@ void Megaman::OnCollision(float deltatime)
 				EnemyCollision(1);		//Right
 			else
 				EnemyCollision(-1);		//Left
-
+			this->GetHPComponent()->DoDamage((*it)->GetHPComponent()->GetDamage());
 		}
 	}
 	///////////////Check With HeadGunner////////////////////////////
@@ -673,6 +684,7 @@ void Megaman::OnCollision(float deltatime)
 				EnemyCollision(1);		//Right
 			else
 				EnemyCollision(-1);		//Left
+			this->GetHPComponent()->DoDamage((*it)->GetHPComponent()->GetDamage());
 		}
 	}
 	///////////////Check With Helit////////////////////////////
@@ -692,6 +704,7 @@ void Megaman::OnCollision(float deltatime)
 				EnemyCollision(1);		//Right
 			else
 				EnemyCollision(-1);		//Left
+			this->GetHPComponent()->DoDamage((*it)->GetHPComponent()->GetDamage());
 		}
 	}
 	///////////////Check With NotorBullet////////////////////////////
@@ -711,9 +724,10 @@ void Megaman::OnCollision(float deltatime)
 				EnemyCollision(1);		//Right
 			else
 				EnemyCollision(-1);		//Left
+			this->GetHPComponent()->DoDamage((*it)->GetHPComponent()->GetDamage());
 		}
 	}
-	///////////////Check With NotorBullet////////////////////////////
+	///////////////Check With Rocket////////////////////////////
 	std::vector<Rocket*> *listRocket = &Rocket::listRocket;
 	if (!listRocket->empty() && !DEBUG_IMMORTAL)
 	{
@@ -730,6 +744,7 @@ void Megaman::OnCollision(float deltatime)
 				EnemyCollision(1);		//Right
 			else
 				EnemyCollision(-1);		//Left
+			this->GetHPComponent()->DoDamage((*it)->GetHPComponent()->GetDamage());
 		}
 	}
 
@@ -830,6 +845,9 @@ void Megaman::OnCollision(float deltatime)
 	{
 		for (std::vector<Elevator*>::iterator it = listElevator->begin(); it != listElevator->end(); it++)
 		{
+			if (abs(this->GetPosition().y - (*it)->GetPosition().y > 700))
+				(*it)->Reset();
+
 			int normalX = 0;
 			int normalY = 0;
 			float collideTime3 = Collision::GetCollideTime(this->box, (*it)->box, &normalX, &normalY, deltatime);
@@ -839,8 +857,13 @@ void Megaman::OnCollision(float deltatime)
 			
 			float collideTime = Collision::GetCollideTime(this->box, (*it)->box, &normalX, &normalY, deltatime);
 
+			(*it)->bWaiting = false;
+
 			if ((*it)->name == "ground")
-				ElevatorCollision(collideTime, normalX, normalY, deltatime, (*it)->box.GetBox(),(*it)->GetMoveComponent()->GetSpeed());
+				if ((*it)->bStop)
+					GroundCollision(collideTime, normalX, normalY, deltatime, (*it)->box.GetBox());
+				else
+					ElevatorCollision(collideTime, normalX, normalY, deltatime, (*it)->box.GetBox(),(*it)->GetMoveComponent()->GetSpeed());
 			
 		}
 	}
@@ -860,7 +883,7 @@ void Megaman::OnCollision(float deltatime)
 
 			float collideTime = Collision::GetCollideTime(this->box, (*it)->box, &normalX, &normalY, deltatime);
 
-			if (this->GetPosition().x - (*it)->GetPosition().x < 0)
+			if (this->GetPosition().x - (*it)->GetPosition().x < 0 && bEndBossFight)
 			{
 				if ((*it)->name == "gate" && !bPassingGate)
 				{

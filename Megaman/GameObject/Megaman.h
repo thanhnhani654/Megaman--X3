@@ -50,6 +50,7 @@ private:
 	bool bImmortal;
 	bool bPassingGate;
 	bool bDisableInput;
+	
 
 	//Attribute
 	float limitDashTime;
@@ -89,6 +90,9 @@ private:
 	
 
 public:
+	bool bHornetFiglt;
+	bool bEndBossFight;
+
 	#pragma region Inherit
 
 	//Inherit From Creature
