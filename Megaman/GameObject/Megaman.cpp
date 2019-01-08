@@ -210,14 +210,20 @@ void Megaman::WallCollision(float collideTime, int normalX, int normalY, float d
 			vecX = collideTime * GetMoveComponent()->GetVelocity().x;
 		}
 		GetMoveComponent()->SetVelocity(vecX, vecY);
-		if (bJump && !bClingWall)
+		if (bJump && !bClingWall && GetMoveComponent()->GetVelocity().y < 0)
 		{
 			bJump = false;
 			bClingWall = true;
 			GetMoveComponent()->IdleX();		
 			GetMoveComponent()->DisableGravity();
 			GetMoveComponent()->IdleY();
+			if (direction == eDirection::Left)
+				direction = eDirection::Right;
+			else
+				direction = eDirection::Left;
 		}
+		if (state == eMegamanState::ClingWall)
+			GetMoveComponent()->SetVelocity(GetMoveComponent()->GetVelocity().x, -30);
 		
 		
 	}
@@ -277,8 +283,9 @@ void Megaman::GateCollision(float collideTime, int normalX, int normalY, float d
 			vecX = collideTime * GetMoveComponent()->GetVelocity().x;
 		}
 		GetMoveComponent()->SetVelocity(vecX, vecY);
-		if (bJump && !bClingWall)
+		if (bJump && !bClingWall && GetMoveComponent()->GetVelocity().y < 0)
 		{
+			//std::cout << GetMoveComponent()->GetVelocity().y;
 			bJump = false;
 			bClingWall = true;
 			GetMoveComponent()->IdleX();
@@ -550,6 +557,7 @@ void Megaman::UpdateState(float deltatime)
 			state = eMegamanState::Stand;
 		break;
 	case eMegamanState::ClingWall:
+		
 		if (bJump)
 			state = eMegamanState::Jump;
 		break;
@@ -729,41 +737,91 @@ void Megaman::OnCollision(float deltatime)
 	std::vector<MapCollision*> *listMapCollsion = &MapCollision::listMapCollision;
 	if (!listMapCollsion->empty())
 	{
+		bool bContinueAll = true;
 		for (std::vector<MapCollision*>::iterator it = listMapCollsion->begin(); it != listMapCollsion->end(); it++)
 		{
 			if ((*it)->IsDisable())
 				continue;
 
-
-			if (!Collision::IsIntersection(Collision::GetBroadphaseBox(this->box, deltatime), (*it)->box.GetBox()))
-				continue;
 			int normalX = 0;
 			int normalY = 0;
-			float collideTime = Collision::GetCollideTime(this->box, (*it)->box, &normalX, &normalY, deltatime);
+			float collideTime;
+
+			if (!Collision::IsIntersection(Collision::GetBroadphaseBox(this->box, deltatime), (*it)->box.GetBox()))
+			{
+				goto wall;
+			}
+			bContinueAll = false;
+
+			normalX = 0;
+			normalY = 0;
+			collideTime = Collision::GetCollideTime(this->box, (*it)->box, &normalX, &normalY, deltatime);
 			
 			if ((*it)->name == "ground")
 			{
 				GroundCollision(collideTime, normalX, normalY, deltatime, (*it)->box.GetBox());
+				continue;
 			}
 
 			if ((*it)->name == "leftScroller")
 			{
 				GroundCollision(collideTime, normalX, normalY, deltatime, (*it)->box.GetBox());
 				GetMoveComponent()->SetVelocity(GetMoveComponent()->GetVelocity().x - 70, GetMoveComponent()->GetVelocity().y);
+				continue;
 			}
 
 			if ((*it)->name == "rightScroller")
 			{
 				GroundCollision(collideTime, normalX, normalY, deltatime, (*it)->box.GetBox());
 				GetMoveComponent()->SetVelocity(GetMoveComponent()->GetVelocity().x + 70, GetMoveComponent()->GetVelocity().y);
+				continue;
 			}
 
 			if ((*it)->name == "wall" && normalX != 0)
 			{
 				WallCollision(collideTime, normalX, normalY, deltatime, (*it)->box.GetBox());
-				
+				continue;
 			}
+
+			wall:
+
+			if (GetMoveComponent()->GetVelocity().y > 0 || state != eMegamanState::ClingWall)
+				continue;
+
+			D3DXVECTOR2 tempVector = GetMoveComponent()->GetVelocity();
+			GetMoveComponent()->SetVelocity(0, 0);
+			if (GetMoveComponent()->GetVelocity().x == 0)
+				if (direction == eDirection::Left)
+					GetMoveComponent()->SetVelocity(+100, -30);
+				else
+					GetMoveComponent()->SetVelocity(-100, -30);
+
+			if (!Collision::IsIntersection(Collision::GetBroadphaseBox(this->box, deltatime), (*it)->box.GetBox()))
+			{
+				this->GetMoveComponent()->SetVelocity(tempVector.x, tempVector.y);
+				//state = eMegamanState::Stand;
+				continue;
+			}
+			bContinueAll = false;
+			normalX = 0;
+			normalY = 0;
+			collideTime = Collision::GetCollideTime(this->box, (*it)->box, &normalX, &normalY, deltatime);
+
+			if ((*it)->name == "wall" && normalX != 0)
+			{
+				WallCollision(collideTime, normalX, normalY, deltatime, (*it)->box.GetBox());	
+			}
+			else
+			{
+				GetMoveComponent()->SetVelocity(tempVector.x, tempVector.y);
+			}
+
+			//if ((*it)->name == "wall" && state == eMegamanState::ClingWall)
+				
 		}
+
+		//if (state == eMegamanState::ClingWall && bContinueAll)
+			//state = eMegamanState::Stand;
 	}
 
 	///////////////////////////////Check With Elevator//////////////////////////////////////////////
