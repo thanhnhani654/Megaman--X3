@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <algorithm>
 
 using namespace std;
 
@@ -28,7 +29,9 @@ struct Rect
 struct Entity
 {
 	int id;
+	bool inserted;
 	Rect* boundBox;
+	int direction;
 
 	Rect* GetBoundingBox()
 	{
@@ -38,10 +41,12 @@ struct Entity
 	{
 		boundBox = new Rect();
 	}
-	Entity(int iid, Rect* irect)
+	Entity(int iid, Rect* irect, int idirect = 0)
 	{
+
 		id = iid;
 		boundBox = irect;
+		direction = idirect;
 	}
 };
 
@@ -78,5 +83,7 @@ public:
 	void           Insert(Entity* entity);
 
 	void		   PrintObjectWhere();
+	void		   PrintObject();
+	std::vector<Entity*>* deleteElement(Entity* entity);
 };
 

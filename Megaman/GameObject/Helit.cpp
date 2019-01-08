@@ -1,4 +1,4 @@
-#include "Helit.h"
+﻿#include "Helit.h"
 
 std::vector<Helit*> Helit::listHelit;
 
@@ -131,10 +131,13 @@ void Helit::Initialize()
 
 	GetMoveComponent()->DisableGravity();
 	GetMoveComponent()->SetSpeed(120);
+	InitialzieHPComponent(3, 1);
 
 	fireTimeInterval = 1.f;
 	fireTimeIntervalCount = fireTimeInterval;
 	fireCount = 0;
+	timeToDead = 0.5;
+	timeToDeadCount = timeToDead;
 
 	madTime1 = 0.3f;
 	madTime1Count = madTime1;
@@ -149,11 +152,13 @@ void Helit::Initialize()
 
 void Helit::ReInitialize(D3DXVECTOR2 pos, int direction)
 {
+	InitialzieHPComponent(3, 1);
 	sprite.get()->SetAnimation("helit");
 	state = eHelitState::GoDown;
 	fireTimeIntervalCount = fireTimeInterval;
 	madTime1Count = madTime1;
 	madTime2Count = madTime2;
+	timeToDeadCount = timeToDead;
 	bMad = false;
 }
 
@@ -163,10 +168,19 @@ void Helit::UpdateInput(float deltatime)
 
 void Helit::Update(float deltatime)
 {
+	if (GetHPComponent()->IsDead() && state != eHelitState::onHDead)
+	{
+		state = eHelitState::onHDead;
+		sprite.get()->SetAnimation("explosive_1", false);
+		GetMoveComponent()->IdleX();
+		GetMoveComponent()->IdleY();
+	}
+	UpdateState(deltatime);
+
 	OnCollision(deltatime);
 
 	GetMoveComponent()->UpdateMovement(deltatime);
-	UpdateState(deltatime);
+	//UpdateState(deltatime);
 
 	GoDownFindPlayer(deltatime);
 	RunAway();
@@ -233,8 +247,11 @@ void Helit::UpdateState(float deltatime)
 			FireRocket();
 			fireTimeIntervalCount = fireTimeInterval;
 		}
-		
-
+		break;
+	case onHDead:
+		timeToDeadCount -= deltatime;
+		if (timeToDeadCount < 0)
+			Disable();
 		break;
 	default:
 		break;
@@ -258,6 +275,22 @@ void Helit::OnCollision(float deltatime)
 			//state = eHelitState::Mad;
 			tempY = this->GetPosition().y;
 			bMad = true;
+		}
+	}
+
+	// Kiểm tra va chạm với đạn của Megaman
+	std::vector<NormalBullet*> *listBullet = &NormalBullet::listNormalBullet;
+	if (!listBullet->empty())
+	{
+		for (std::vector<NormalBullet*>::iterator it = listBullet->begin(); it != listBullet->end(); it++)
+		{
+			if ((*it)->bDisable)
+				continue;
+			if (!Collision::IsIntersection(this->box.GetBox(), (*it)->box.GetBox()))
+				continue;
+			(*it)->Disable();
+			// Code Ở đây đoạn trừ máu của enemy
+			this->GetHPComponent()->DoDamage((*it)->damage, (*it)->bGodMode);
 		}
 	}
 }

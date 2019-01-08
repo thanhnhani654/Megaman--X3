@@ -31,6 +31,8 @@ public:
 	{
 		return &moveComponent;
 	}
+
+	void InitialzieHPComponent(float hp, float dmg) { hpComponent.Initialize(hp, dmg); }
 	
 	HPComponent* GetHPComponent()
 	{

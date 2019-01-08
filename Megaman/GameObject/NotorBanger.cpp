@@ -74,6 +74,9 @@ void NotorBanger::Initialize()
 	GetMoveComponent()->EnableGravity();
 	GetMoveComponent()->SetSpeed(150);
 	GetMoveComponent()->SetJumpPower(80);
+	
+	InitialzieHPComponent(3, 1);
+
 	bJumping = false;
 	state = eNotorBangerState::Jump;
 	fire1Time = 2.0f;
@@ -88,6 +91,8 @@ void NotorBanger::Initialize()
 	fireInteval = 0.5;
 	fireIntevalCount = 0;
 	fireTimesCount = 0;
+	timeToDead = 0.5;
+	timeToDeadCount = timeToDead;
 
 	listNotorBanger.push_back(this);
 }
@@ -95,10 +100,12 @@ void NotorBanger::Initialize()
 void NotorBanger::ReInitialize(D3DXVECTOR2 pos, int direct)
 {
 	bJumping = false;
+	InitialzieHPComponent(3, 1);
 	state = eNotorBangerState::Jump;
 	fire1TimeCount = fire1Time;
 	sprite.get()->SetAnimation("notorbanger_change_posture_1");
 	waitForFireTimeCount = waitForFireTime;
+	timeToDeadCount = timeToDead;
 
 	this->SetPosition(pos);
 
@@ -120,13 +127,24 @@ void NotorBanger::UpdateInput(float deltatime)
 
 void NotorBanger::Update(float deltatime)
 {
+	if (GetHPComponent()->IsDead() && state != eNotorBangerState::onNBDead)
+	{
+		state = eNotorBangerState::onNBDead;
+		sprite.get()->SetAnimation("explosive_1", false);
+		GetMoveComponent()->IdleX();
+		GetMoveComponent()->IdleY();
+	}
+	UpdateState(deltatime);
+	if (state == eNotorBangerState::onNBDead)
+		return;
+
 	OnCollision(deltatime);
 
 	/*demTime += deltatime;
 	cout << demTime << endl;*/
 
 	GetMoveComponent()->UpdateMovement(deltatime);
-	UpdateState(deltatime);
+	
 
 	FireBulletUpdate(deltatime);
 
@@ -198,7 +216,14 @@ void NotorBanger::UpdateState(float deltatime)
 		state = eNotorBangerState::Jump;
 		sprite.get()->SetAnimation("notorbanger_jump");
 		break;
-		
+	case onNBDead:
+		timeToDeadCount -= deltatime;
+		if (timeToDeadCount < 0)
+		{
+			cout << "DEAD" << endl;
+			Disable();
+		}
+		break;
 	default:
 		break;
 	}
@@ -284,6 +309,7 @@ void NotorBanger::OnCollision(float deltatime)
 				continue;
 			(*it)->Disable();
 			// Code Ở đây đoạn trừ máu của enemy
+			this->GetHPComponent()->DoDamage((*it)->damage, (*it)->bGodMode);
 		}
 	}
 }

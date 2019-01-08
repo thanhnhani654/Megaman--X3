@@ -20,10 +20,21 @@ void MapCollision::Initialize(int id,float x, float y, int w, int h)
 
 void MapCollision::Initialize2(int type, float x, float y, int w, int h)
 {
-	if (type == 1)
-		this->name = "ground";
-	else if (type == 0)
+	switch (type)
+	{
+	case 0:
 		this->name = "wall";
+		break;
+	case 1:
+		this->name = "ground";
+		break;
+	case 2:
+		this->name = "leftScroller";
+		break;
+	case 3:
+		this->name = "rightScroller";
+		break;
+	}
 	GetTagMethod()->AddTag(eTag::GroundTag);
 	SetPosition(x, y);
 	box.StaticInitialize(this, w, h);
@@ -33,10 +44,21 @@ void MapCollision::Initialize2(int type, float x, float y, int w, int h)
 
 void MapCollision::ReInitialize(int type, float x, float y, int w, int h)
 {
-	if (type == 1)
-		this->name = "ground";
-	else if (type == 0)
+	switch (type)
+	{
+	case 0:
 		this->name = "wall";
+		break;
+	case 1:
+		this->name = "ground";
+		break;
+	case 2:
+		this->name = "leftScroller";
+		break;
+	case 3:
+		this->name = "rightScroller";
+		break;
+	}
 	SetPosition(x, y);
 	box.SetSize(w, h);
 	box.SetPosition();

@@ -8,7 +8,7 @@ void Gate1::Initialize()
 	listGate1.push_back(this);
 	name = "null";
 	GetTagMethod()->AddTag(eTag::WallTag);
-	sprite.get()->SetAnimation("gate_1");
+	sprite.get()->SetAnimation("gate_1_open");
 }
 
 void Gate1::Initialize(float x, float y, int w, int h)
@@ -20,9 +20,20 @@ void Gate1::Initialize(float x, float y, int w, int h)
 
 	name = "gate";
 	GetTagMethod()->AddTag(eTag::WallTag);
-	sprite.get()->SetAnimation("gate_1");
+	sprite.get()->SetAnimation("gate_1", false);
+	sprite.get()->SetFrameRate(4);
 
 	listGate1.push_back(this);
+}
+
+void Gate1::GateOpen()
+{
+	sprite.get()->SetAnimation("gate_1_open", false);
+}
+
+void Gate1::GateClosed()
+{
+	sprite.get()->SetAnimation("gate_1_close", false);
 }
 
 void Gate1::Update(float deltatime)

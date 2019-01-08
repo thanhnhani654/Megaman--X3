@@ -14,8 +14,8 @@ int WinAPI_Initialize(HWND &hwnd, HINSTANCE hInstance);
 void ShowFPS(bool show, float deltatime);
 float GetDeltaTime();
 
-int winHeight = 400;
-int winWidth  = 400;
+int winHeight = 250;
+int winWidth  = 250;
 
 int main()
 {

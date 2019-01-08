@@ -15,7 +15,8 @@ enum eBlastHornetState
 	DirectAttack,				//Đâm Kim
 	Back,
 	AngleAttack,				//Thả thiên thần
-	HuhuKheckhec				//Lượn một chút
+	HuhuKheckhec,				//Lượn một chút
+	onBHDead
 };
 
 enum eMysteryState
@@ -33,6 +34,7 @@ private:
 	eBlastHornetState state;
 	Sprite subSprite;
 	Megaman* megaman;
+
 
 	
 	//Specific Attribute
@@ -57,6 +59,8 @@ private:
 	float angleAttackTimeCount;
 	float changeStateTime;
 	float changeStateTimeCount;
+	float timeToDead;
+	float timeToDeadCount;
 
 	bool bDisable;
 

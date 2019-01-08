@@ -13,7 +13,7 @@ enum eHelitState
 	GoUp,
 	Mad,
 	Fire,
-
+	onHDead
 };
 
 
@@ -34,6 +34,8 @@ private:
 	float madTime2Count;
 	int   madstage;
 	float tempY;
+	float timeToDead;
+	float timeToDeadCount;
 
 	bool bMad;
 	bool bDisable;

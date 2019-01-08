@@ -206,6 +206,8 @@ void Sprite::Render(float X, float Y)
 
 void Sprite::Next()
 {
+	if (stopAnimation)
+		return;
 	countFrame++;
 	if (countFrame >= frameRate)
 	{
@@ -378,6 +380,11 @@ void Sprite::SetCenter(int i)
 {
 	this->center = i;
 	customCenter = true;
+}
+
+void Sprite::ToggleAnimationClip()
+{
+	stopAnimation = !stopAnimation;
 }
 
 void Sprite::PrintSpritePos(int mode)

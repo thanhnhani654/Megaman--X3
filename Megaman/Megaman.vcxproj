@@ -181,6 +181,7 @@
     <ClCompile Include="GameObject\NotorBanger.cpp" />
     <ClCompile Include="GameObject\NotorBullet.cpp" />
     <ClCompile Include="GameObject\Rocket.cpp" />
+    <ClCompile Include="GameObject\Scroller.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pugixml-1.8\src\pugixml.cpp" />
@@ -215,6 +216,7 @@
     <ClInclude Include="GameObject\NotorBanger.h" />
     <ClInclude Include="GameObject\NotorBullet.h" />
     <ClInclude Include="GameObject\Rocket.h" />
+    <ClInclude Include="GameObject\Scroller.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="pugixml-1.8\src\pugixml.hpp" />
     <ClInclude Include="Quadtree.h" />

@@ -36,7 +36,11 @@ void Quadtree::Split()
 void Quadtree::Insert(Entity* entity)
 {
 	//Insert entity into corresponding nodes
-	
+	if (entity->boundBox->x == 7685 && id == "2420000000")
+		int a = 0;
+	if (entity->boundBox->x == 7685 && id == "2422000000")
+		int a = 0;
+
 	if (m_nodes)
 	{
 		if (!this->HoanToanNamTrongNodeKeTiep(entity))
@@ -65,6 +69,9 @@ void Quadtree::Insert(Entity* entity)
 	//if (this->IsContain(entity) && this->HoanToanNamTrong(entity))
 	if (this->HoanToanNamTrong(entity))
 	{
+		if (entity->inserted)
+			int a = 0;
+		entity->inserted = true;
 		m_objects_list->push_back(entity);
 		//std::cout << "ID: " << entity->id << " \tLevel: " << m_level << " \tX= " << m_region->x << " \tY= " << m_region->y << " \tWidth= " << m_region->width << " \tHeight= " << m_region->height << std::endl;
 	}
@@ -75,9 +82,12 @@ void Quadtree::Insert(Entity* entity)
 		Split();
 		int i = 0;
 
+
+
 		while (!m_objects_list->empty())
 		{
 			int temp = m_objects_list->size() - 1 - i;
+			std::cout << temp << " " << i<<endl;
 			if (temp < 0)
 				return;
 			if (!HoanToanNamTrongNodeKeTiep(m_objects_list->at(m_objects_list->size() - 1 - i)))
@@ -93,8 +103,14 @@ void Quadtree::Insert(Entity* entity)
 				m_nodes[2]->Insert(m_objects_list->at(m_objects_list->size() - 1 - i));
 			if (m_nodes[3]->IsContain(m_objects_list->at(m_objects_list->size() - 1 - i)))
 				m_nodes[3]->Insert(m_objects_list->at(m_objects_list->size() - 1 - i));
-
-			m_objects_list->pop_back();
+			if (this->m_objects_list->at(m_objects_list->size() - 1 - i)->boundBox->x == 7685)
+				int a = 0;
+			m_objects_list->at(m_objects_list->size() - 1 - i)->inserted = false;
+			//if (i > 0 && m_objects_list->size() > i)
+			//	std::swap_ranges(m_objects_list->end()-(i-1), m_objects_list->end(), m_objects_list->end() - i-1);
+			//m_objects_list->pop_back();
+			m_objects_list = deleteElement(m_objects_list->at(m_objects_list->size() - 1 - i));
+			m_objects_list->shrink_to_fit();
 		}
 	}
 
@@ -169,6 +185,11 @@ void Quadtree::PrintObjectWhere()
 		temp = itoa(m_objects_list->at(i)->boundBox->height, temp, 10);
 		temp2 = string(temp);
 		data += temp2;
+
+		data += ' ';
+		temp = itoa(m_objects_list->at(i)->direction, temp, 10);
+		temp2 = string(temp);
+		data += temp2;
 	}
 	data += '\n';
 	f << data;
@@ -186,6 +207,39 @@ void Quadtree::PrintObjectWhere()
 	}
 
 	
+}
+
+void Quadtree::PrintObject()
+{
+	if (!m_objects_list->empty())
+		for (int i = 0; i < m_objects_list->size(); i++)
+		{
+			std::cout << "ID: " << m_objects_list->at(i)->id << "\tX: " << m_objects_list->at(i)->boundBox->x << "\tY: " << m_objects_list->at(i)->boundBox->y << "\tWidth: " << m_objects_list->at(i)->boundBox->width << "\tHeight: " << m_objects_list->at(i)->boundBox->height << std::endl;
+			count++;
+		}
+	std::cout << std::endl;
+
+	if (m_nodes)
+	{
+		m_nodes[0]->PrintObject();
+		m_nodes[1]->PrintObject();
+		m_nodes[2]->PrintObject();
+		m_nodes[3]->PrintObject();
+
+		return; // Return here to ignore rest.
+	}
+}
+
+std::vector<Entity*>* Quadtree::deleteElement(Entity * entity)
+{
+	std::vector<Entity*>* tempList = new std::vector<Entity*>();
+	for (int i = 0; i < m_objects_list->size(); i++)
+	{
+		if (m_objects_list->at(i) != entity)
+			tempList->push_back(m_objects_list->at(i));
+	}
+
+	return tempList;
 }
 
 void Quadtree::Clear()

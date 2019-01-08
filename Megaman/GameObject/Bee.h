@@ -5,8 +5,8 @@
 #include "NotorBullet.h"
 #include "Rocket.h"
 
-#define PRINT_SIZE TRUE
-#define PRINT_SIZE_ENABLE_OBJECT TRUE
+#define PRINT_SIZE FALSE
+#define PRINT_SIZE_ENABLE_OBJECT FALSE
 
 enum eBeeState
 {
@@ -34,6 +34,8 @@ private:
 	float timeToDieCount;
 	float dieTime;
 	float dieTimeCount;
+	float timeToDead;
+	float timeToDeadCount;
 
 
 public:

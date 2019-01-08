@@ -5,11 +5,10 @@ void Megaman::Initialize()
 	Creature::Initialize();
 	state = eMegamanState::Stand;
 	sprite.get()->SetAnimation("char_stand");	
-	//sprite.get()->SetFrameRate(5);
-	//GetMoveComponent()->DisableGravity();
 	GetMoveComponent()->EnableGravity();
 	GetMoveComponent()->SetSpeed(150);
-	GetMoveComponent()->SetJumpPower(150);
+	GetMoveComponent()->SetJumpPower(120);
+	InitialzieHPComponent(10, 1);
 
 	//Thuộc tính riêng biệt
 	limitDashTime = 0.4f;
@@ -25,12 +24,18 @@ void Megaman::Initialize()
 	immortalCountTime = immortalTime;
 	hurtEffect = 5;
 	hurtEffectCount = hurtEffect;
+	timePassGate = 2.0f;
+	timePassGateCount = timePassGate;
+	waitOpenGateTime = 1.5f;
+	waitOpenGateTimeCount = waitOpenGateTime;
+	bPassingGate = false;
+	bDisableInput = false;
 
 	box.DynamicInitialize(this, 16, 26);
 	box.SetPivot(8,16);
 
 	GetTagMethod()->AddTag(eTag::PlayerTag);
-	
+	GetHPComponent()->ToggleGodMode();
 }
 
 void Megaman::Ghost_Initialize(){}
@@ -263,6 +268,7 @@ void Megaman::GateCollision(float collideTime, int normalX, int normalY, float d
 {
 	if (collideTime >= 0 || collideTime < 0.1)
 	{
+		
 		float vecX = GetMoveComponent()->GetVelocity().x;
 		float vecY = GetMoveComponent()->GetVelocity().y;
 		if (normalX != 0)
@@ -312,11 +318,11 @@ void Megaman::FireBullet()
 		if ((*it)->bDisable)
 		{
 			if (chargeBar < 1)
-				(*it)->Re_Initialize(GetPosition().x, GetPosition().y, direction,1);
+				(*it)->Re_Initialize(GetPosition().x, GetPosition().y, direction,1, GetHPComponent()->GetDamage(), GetHPComponent()->IsGodMode());
 			else if (chargeBar < 2 && chargeBar >= 1)
-				(*it)->Re_Initialize(GetPosition().x, GetPosition().y, direction, 2);
+				(*it)->Re_Initialize(GetPosition().x, GetPosition().y, direction, 2, GetHPComponent()->GetDamage(), GetHPComponent()->IsGodMode());
 			else
-				(*it)->Re_Initialize(GetPosition().x, GetPosition().y, direction, 3);
+				(*it)->Re_Initialize(GetPosition().x, GetPosition().y, direction, 3, GetHPComponent()->GetDamage(), GetHPComponent()->IsGodMode());
 			chargeBar = 0;
 			bShoot = true;
 			return;
@@ -324,11 +330,11 @@ void Megaman::FireBullet()
 	}
 	NormalBullet* bullet1 = new NormalBullet();
 	if (chargeBar < 1)
-		bullet1->Ghost_Initialize(GetPosition().x, GetPosition().y, direction, 1);
+		bullet1->Ghost_Initialize(GetPosition().x, GetPosition().y, direction, 1, GetHPComponent()->GetDamage(), GetHPComponent()->IsGodMode());
 	else if (chargeBar < 2 && chargeBar >= 1)
-		bullet1->Ghost_Initialize(GetPosition().x, GetPosition().y, direction, 2);
+		bullet1->Ghost_Initialize(GetPosition().x, GetPosition().y, direction, 2, GetHPComponent()->GetDamage(), GetHPComponent()->IsGodMode());
 	else
-		bullet1->Ghost_Initialize(GetPosition().x, GetPosition().y, direction, 3);
+		bullet1->Ghost_Initialize(GetPosition().x, GetPosition().y, direction, 3, GetHPComponent()->GetDamage(), GetHPComponent()->IsGodMode());
 	chargeBar = 0;
 	bShoot = true;
 
@@ -386,13 +392,43 @@ void Megaman::HurtCountDown(float deltatime)
 	state = eMegamanState::Stand;
 }
 
+void Megaman::PassGate(float deltatime)
+{
+	if (!bPassingGate)
+		return;
+	if (timePassGateCount <= 0)
+	{
+		timePassGateCount = timePassGate;
+		waitOpenGateTimeCount = waitOpenGateTime;
+		sprite.get()->ToggleAnimationClip();
+		bPassingGate = false;
+		bDisableInput = false;
+		if (tempGate == nullptr)
+			cout << "ERRORRRRRRR: tempGate null" << endl;
+		else
+			tempGate->GateClosed();
+	}
+
+	if (waitOpenGateTimeCount <= 0)
+	{
+		GetMoveComponent()->SetVelocity(30, GetMoveComponent()->GetVelocity().y);
+		timePassGateCount -= deltatime;
+	}
+	waitOpenGateTimeCount -= deltatime;
+
+}
+
 void Megaman::UpdateInput(float deltatime)
 {
-	_ProcessKeyBoard();
+	//if (!bDisableInput)
+		_ProcessKeyBoard();
 	if (state != eMegamanState::Hurt)
 	{
-		MovementController(deltatime);
-		ChargeUp(deltatime);
+		if (!bDisableInput)
+		{
+			MovementController(deltatime);
+			ChargeUp(deltatime);
+		}
 	}
 
 	//Trước khi kết thúc cập nhật thì cập nhật lại trạng thái 
@@ -404,12 +440,14 @@ void Megaman::UpdateInput(float deltatime)
 
 void Megaman::Update(float deltatime)
 {
+	PassGate(deltatime);
 	//Bắt buộc để MoveComponent hoạt động
 	GetMoveComponent()->UpdateMovement(deltatime);
 
 	UpdateBullet(deltatime);
 	ShootCountDown(deltatime);
 	HurtCountDown(deltatime);
+	
 }
 
 void Megaman::UpdateBullet(float deltatime)
@@ -688,6 +726,18 @@ void Megaman::OnCollision(float deltatime)
 				GroundCollision(collideTime, normalX, normalY, deltatime, (*it)->box.GetBox());
 			}
 
+			if ((*it)->name == "leftScroller")
+			{
+				GroundCollision(collideTime, normalX, normalY, deltatime, (*it)->box.GetBox());
+				GetMoveComponent()->SetVelocity(GetMoveComponent()->GetVelocity().x - 70, GetMoveComponent()->GetVelocity().y);
+			}
+
+			if ((*it)->name == "rightScroller")
+			{
+				GroundCollision(collideTime, normalX, normalY, deltatime, (*it)->box.GetBox());
+				GetMoveComponent()->SetVelocity(GetMoveComponent()->GetVelocity().x + 70, GetMoveComponent()->GetVelocity().y);
+			}
+
 			if ((*it)->name == "wall" && normalX != 0)
 			{
 				WallCollision(collideTime, normalX, normalY, deltatime, (*it)->box.GetBox());
@@ -713,7 +763,7 @@ void Megaman::OnCollision(float deltatime)
 
 			if ((*it)->name == "ground")
 				ElevatorCollision(collideTime, normalX, normalY, deltatime, (*it)->box.GetBox(),(*it)->GetMoveComponent()->GetSpeed());
-			float collideTime2 = Collision::GetCollideTime(this->box, (*it)->box, &normalX, &normalY, deltatime);
+			
 		}
 	}
 
@@ -732,9 +782,21 @@ void Megaman::OnCollision(float deltatime)
 
 			float collideTime = Collision::GetCollideTime(this->box, (*it)->box, &normalX, &normalY, deltatime);
 
-			if ((*it)->name == "gate")
+			if (this->GetPosition().x - (*it)->GetPosition().x < 0)
+			{
+				if ((*it)->name == "gate" && !bPassingGate)
+				{
+					bPassingGate = true;
+					sprite.get()->ToggleAnimationClip();
+					bDisableInput = true;
+					GetMoveComponent()->IdleX();
+					GetMoveComponent()->SetVelocity(0, GetMoveComponent()->GetVelocity().y);
+					(*it)->GateOpen();
+					tempGate = (*it);
+				}
+			}
+			else
 				GateCollision(collideTime, normalX, normalY, deltatime, (*it)->box.GetBox(), (*it)->GetMoveComponent()->GetSpeed());
-			float collideTime2 = Collision::GetCollideTime(this->box, (*it)->box, &normalX, &normalY, deltatime);
 		}
 	}
 

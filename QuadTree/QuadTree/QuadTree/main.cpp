@@ -25,12 +25,11 @@ void main()
 		getline(f, line);
 		data += line;
 		data += "\n";
+
 		listObject.push_back(LoadData(line));
 	}
 	PrintListObject(listObject);
 	//cout << data;
-
-	f.close();
 
 
 	//
@@ -43,7 +42,7 @@ void main()
 	cout << endl << endl;
 
 	tree->PrintObjectWhere();
-
+	//tree->PrintObject();
 	system("pause");
 	return;
 }
@@ -99,7 +98,7 @@ Entity* LoadData(string line)
 	data = "";
 
 	//////////////////////// H
-	while (i <= line.length())
+	while (line[i] != ' ')
 	{
 		data += line[i];
 		i++;
@@ -109,7 +108,18 @@ Entity* LoadData(string line)
 	int h = atoi(data.c_str());
 	data = "";
 
-	Entity* e = new Entity(id, new Rect(x, y, w, h));
+	//////////////////////// Direction
+	while (i <= line.length())
+	{
+		data += line[i];
+		i++;
+	}
+	i++;
+
+	int direct = atoi(data.c_str());
+	data = "";
+
+	Entity* e = new Entity(id, new Rect(x, y, w, h), direct);
 
 	return e;
 }

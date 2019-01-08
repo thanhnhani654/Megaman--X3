@@ -42,6 +42,7 @@ void BlastHornet::Initialize()
 	sprite.get()->SetAnimation("blasthornet");
 	subSprite.SetAnimation("blasthornet_wing");
 	state = eBlastHornetState::DetectTarget;
+	InitialzieHPComponent(30, 1);
 
 	changeStateTime = 3.f;
 	changeStateTimeCount = changeStateTime;
