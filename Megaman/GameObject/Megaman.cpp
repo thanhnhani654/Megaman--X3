@@ -38,7 +38,7 @@ void Megaman::Initialize()
 	box.SetPivot(8,16);
 
 	GetTagMethod()->AddTag(eTag::PlayerTag);
-	//GetHPComponent()->ToggleGodMode();
+	GetHPComponent()->ToggleGodMode();
 }
 
 void Megaman::Ghost_Initialize(){}

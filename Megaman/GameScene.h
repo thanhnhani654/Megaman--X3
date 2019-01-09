@@ -42,6 +42,7 @@ private:
 
 	Elevator ele;
 	Gate1 gate1;
+	Gate1 gate2;
 
 	Quadtree* tree;
 

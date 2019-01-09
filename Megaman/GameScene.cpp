@@ -35,7 +35,8 @@ void GameScene::Initialize()
 	//mapcollision1.SetName("rightScroller");
 
 	ele.Initialize(892,3130,64,16);
-	gate1.Initialize(2300, 2910, 16, 48);
+	gate1.Initialize(2307, 2912, 16, 48);
+	gate2.Initialize(2549, 2912, 16, 48);
 
 	//Setting Camera
 	Camera::getInstance()->SetPosition(0, 0);
@@ -62,6 +63,7 @@ void GameScene::Update(float deltatime)
 	megaman->Update(deltatime);
 	ele.Update(deltatime);
 	gate1.Update(deltatime);
+	gate2.Update(deltatime);
 
 	temp1.y = megaman->GetPosition().y - temp1.y;
 	temp2.y = ele.GetPosition().y - temp2.y;
@@ -106,4 +108,5 @@ void GameScene::Draw()
 	ele.Draw();
 	map2.Draw();
 	gate1.Draw();
+	gate2.Draw();
 }

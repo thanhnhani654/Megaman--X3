@@ -16,7 +16,7 @@
 #include "HelitRocket.h"
 #include "Bee.h"
 
-#define DEBUG_IMMORTAL FALSE			//TRUE: không va chạm với Enemy hay bullet | FALSE: Va chạm với Enemy và bullet
+#define DEBUG_IMMORTAL TRUE			//TRUE: không va chạm với Enemy hay bullet | FALSE: Va chạm với Enemy và bullet
 
 enum class eMegamanState			
 {
